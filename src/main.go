@@ -30,6 +30,8 @@ func main() {
 
 		unmarshalled, err := unmarshaller.Unmarshal(questionnaireJson)
 		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Cant unmarshall FHIR Questionnaire"))
 			return
 		}
 		containedResource := unmarshalled.(*r4pb.ContainedResource)
