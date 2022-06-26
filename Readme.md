@@ -1,7 +1,7 @@
 # FHIR Questionnaire Decision Engine
 
 ## Summary
-This dockerized container will be used to deploy
+This dockerized web-app will be used to deploy
 code that will take in a series of FHIR Questionnaire
 and once processed, consumer of the app can 
 call into the app by sending a FHIR QuestionnaireResponse
