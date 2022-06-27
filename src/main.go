@@ -11,6 +11,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/google/fhir/go/fhirversion"
 	"github.com/google/fhir/go/jsonformat"
+	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/datatypes_go_proto"
 	r4pb "github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/bundle_and_contained_resource_go_proto"
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/questionnaire_go_proto"
 	"github.com/tomkaith13/fhirQuestionnaireEngine/src/questionnaire_collection"
@@ -36,7 +37,15 @@ func main() {
 			return
 		}
 		containedResource := unmarshalled.(*r4pb.ContainedResource)
+
 		q := containedResource.GetQuestionnaire()
+		custom := "my own metadata"
+		q.Item = append(q.Item, &questionnaire_go_proto.Questionnaire_Item{
+			Id: &datatypes_go_proto.String{
+				Value: custom,
+			},
+		})
+		fmt.Println(q)
 		for _, item := range q.GetItem() {
 			nestedItemParser(item)
 		}
@@ -47,6 +56,26 @@ func main() {
 		}
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(id))
+	})
+
+	r.Post("/questionnaire-resp", func(w http.ResponseWriter, r *http.Request) {
+		questionnaireRespJson, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		unmarshaller, err := jsonformat.NewUnmarshaller(time.UTC.String(), fhirversion.R4)
+
+		unmarshalled, err := unmarshaller.Unmarshal(questionnaireRespJson)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Cant unmarshall FHIR Questionnaire"))
+			return
+		}
+
+		cr := unmarshalled.(*r4pb.ContainedResource)
+		qr := cr.GetQuestionnaireResponse()
+
+		fmt.Println(qr)
 	})
 	http.ListenAndServe(":8080", r)
 }
