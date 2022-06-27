@@ -13,6 +13,7 @@ import (
 	"github.com/google/fhir/go/jsonformat"
 	r4pb "github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/bundle_and_contained_resource_go_proto"
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/questionnaire_go_proto"
+	"github.com/tomkaith13/fhirQuestionnaireEngine/src/questionnaire_collection"
 )
 
 func main() {
@@ -41,10 +42,12 @@ func main() {
 		}
 
 		id := q.GetId().Value
+		if _, ok := questionnaire_collection.FhirQmap[id]; !ok {
+			questionnaire_collection.FhirQmap[id] = *q
+		}
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(id))
 	})
-
 	http.ListenAndServe(":8080", r)
 }
 
