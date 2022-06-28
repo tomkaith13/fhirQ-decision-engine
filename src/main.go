@@ -16,12 +16,8 @@ import (
 	r4pb "github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/bundle_and_contained_resource_go_proto"
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/questionnaire_go_proto"
 	"github.com/tomkaith13/fhirQuestionnaireEngine/src/questionnaire_collection"
+	"github.com/tomkaith13/fhirQuestionnaireEngine/src/questionnaire_resp_model"
 )
-
-type QRBody struct {
-	QuestionnaireResponse any      `json:"questionnaire_resp,omitempty"`
-	QuestionnaireIds      []string `json:"q_ids,omitempty"`
-}
 
 func main() {
 	r := chi.NewRouter()
@@ -51,11 +47,6 @@ func main() {
 				Value: custom,
 			},
 		})
-		fmt.Println(q)
-		for _, item := range q.GetItem() {
-			nestedItemParser(item)
-		}
-
 		id := q.GetId().Value
 		if _, ok := questionnaire_collection.FhirQmap[id]; !ok {
 			questionnaire_collection.FhirQmap[id] = *q
@@ -66,7 +57,7 @@ func main() {
 
 	r.Post("/questionnaire-resp", func(w http.ResponseWriter, r *http.Request) {
 		dec := json.NewDecoder(r.Body)
-		qrBody := QRBody{}
+		qrBody := questionnaire_resp_model.QRBody{}
 
 		err := dec.Decode(&qrBody)
 		if err != nil {
@@ -96,19 +87,11 @@ func main() {
 		cr := unmarshalled.(*r4pb.ContainedResource)
 		qr := cr.GetQuestionnaireResponse()
 
+		// Insert decision logic for a Questionnaire here!!!
+
 		fmt.Println(qr.GetId())
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte("{\"id\": \"" + qr.GetId().Value + "\"}"))
 	})
 	http.ListenAndServe(":8080", r)
-}
-
-func nestedItemParser(item *questionnaire_go_proto.Questionnaire_Item) {
-	fmt.Println(item.GetText())
-	fmt.Println(item.GetEnableWhen())
-	if item.GetItem() != nil {
-		for _, i := range item.GetItem() {
-			nestedItemParser(i)
-		}
-	}
 }
