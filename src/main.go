@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -16,6 +17,11 @@ import (
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/questionnaire_go_proto"
 	"github.com/tomkaith13/fhirQuestionnaireEngine/src/questionnaire_collection"
 )
+
+type QRBody struct {
+	QuestionnaireResponse any      `json:"questionnaire_resp,omitempty"`
+	QuestionnaireIds      []string `json:"q_ids,omitempty"`
+}
 
 func main() {
 	r := chi.NewRouter()
@@ -59,13 +65,28 @@ func main() {
 	})
 
 	r.Post("/questionnaire-resp", func(w http.ResponseWriter, r *http.Request) {
-		questionnaireRespJson, err := ioutil.ReadAll(r.Body)
+		dec := json.NewDecoder(r.Body)
+		qrBody := QRBody{}
+
+		err := dec.Decode(&qrBody)
 		if err != nil {
-			log.Fatalln(err)
+			fmt.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Cant unmarshall custom json"))
+			return
+
+		}
+		fmt.Println(qrBody.QuestionnaireIds)
+
+		regJsonMarshalledData, err := json.Marshal(qrBody.QuestionnaireResponse)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Cant unmarshall custom json"))
+			return
 		}
 		unmarshaller, err := jsonformat.NewUnmarshaller(time.UTC.String(), fhirversion.R4)
 
-		unmarshalled, err := unmarshaller.Unmarshal(questionnaireRespJson)
+		unmarshalled, err := unmarshaller.Unmarshal(regJsonMarshalledData)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("Cant unmarshall FHIR Questionnaire"))
@@ -75,7 +96,9 @@ func main() {
 		cr := unmarshalled.(*r4pb.ContainedResource)
 		qr := cr.GetQuestionnaireResponse()
 
-		fmt.Println(qr)
+		fmt.Println(qr.GetId())
+		w.WriteHeader(http.StatusCreated)
+		w.Write([]byte("{\"id\": \"" + qr.GetId().Value + "\"}"))
 	})
 	http.ListenAndServe(":8080", r)
 }
