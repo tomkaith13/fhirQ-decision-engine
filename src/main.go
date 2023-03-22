@@ -25,6 +25,8 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
+	qMap := make(map[string]*questionnaire_go_proto.Questionnaire)
+
 	r.Post("/questionnaire", func(w http.ResponseWriter, r *http.Request) {
 		questionnaireJson, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -41,6 +43,11 @@ func main() {
 		containedResource := unmarshalled.(*r4pb.ContainedResource)
 
 		q := containedResource.GetQuestionnaire()
+		if _, ok := qMap[q.Id.Value]; ok {
+			w.WriteHeader(http.StatusConflict)
+			w.Write([]byte("id already exists"))
+			return
+		}
 		custom := "my own metadata"
 		q.Item = append(q.Item, &questionnaire_go_proto.Questionnaire_Item{
 			Id: &datatypes_go_proto.String{
@@ -51,8 +58,22 @@ func main() {
 		if _, ok := questionnaire_collection.FhirQmap[id]; !ok {
 			questionnaire_collection.FhirQmap[id] = *q
 		}
+		pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+
+		resp, err := pMarshaller.MarshalResourceToString(q)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+		qMap[q.Id.Value] = q
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(id))
+		w.Write([]byte(resp))
 	})
 
 	r.Post("/questionnaire-resp", func(w http.ResponseWriter, r *http.Request) {
