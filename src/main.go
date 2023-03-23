@@ -135,10 +135,21 @@ func main() {
 		qr := cr.GetQuestionnaireResponse()
 
 		// Insert decision logic for a Questionnaire here!!!
+		for _, item := range qr.Item {
+			for _, ans := range item.Answer {
+				fmt.Println(ans.Value.GetCoding().Code.Value)
+				answerVal := ans.Value.GetCoding().Code.Value
+				if answerVal == "urgent-care" {
+					w.WriteHeader(http.StatusAccepted)
+					w.Write([]byte("Next questionnaire id: urgent-menu"))
+					return
+				}
+			}
+		}
 
 		fmt.Println(qr.GetId())
-		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte("{\"id\": \"" + qr.GetId().Value + "\"}"))
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("{\" Unable to process resp id\": \"" + qr.GetId().Value + "\"}"))
 	})
 	http.ListenAndServe(":8080", r)
 }
