@@ -134,6 +134,8 @@ func main() {
 		cr := unmarshalled.(*r4pb.ContainedResource)
 		qr := cr.GetQuestionnaireResponse()
 
+		qr.Identifier.Value = "test123"
+
 		// Insert decision logic for a Questionnaire here!!!
 
 		fmt.Println(qr.GetId())

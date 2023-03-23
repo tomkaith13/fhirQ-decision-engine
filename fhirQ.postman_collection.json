@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "5a5aeb12-b38e-4e50-8ec0-4b0401c7a283",
+		"name": "fhirQ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13380006"
+	},
+	"item": [
+		{
+			"name": "questionnaire",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"resourceType\":\"Questionnaire\",\"language\":\"nb-NO\",\"status\":\"draft\",\"publisher\":\"NHN\",\"meta\":{\"profile\":[\"http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire\"],\"tag\":[{\"system\":\"urn:ietf:bcp:47\",\"code\":\"nb-NO\",\"display\":\"Bokmål\"}]},\"useContext\":[{\"code\":{\"system\":\"http://hl7.org/fhir/ValueSet/usage-context-type\",\"code\":\"focus\",\"display\":\"Clinical Focus\"},\"valueCodeableConcept\":{\"coding\":[{\"system\":\"urn:oid:2.16.578.1.12.4.1.1.8655\"}]}}],\"contact\":[{\"name\":\"http://www.nhn.no\"}],\"subjectType\":[\"Patient\"],\"extension\":[{\"url\":\"http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar\",\"valueCoding\":{\"system\":\"http://helsenorge.no/fhir/ValueSet/sdf-sidebar\",\"code\":\"1\"}},{\"url\":\"http://helsenorge.no/fhir/StructureDefinition/sdf-information-message\",\"valueCoding\":{\"system\":\"http://helsenorge.no/fhir/ValueSet/sdf-information-message\",\"code\":\"1\"}},{\"url\":\"http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility\",\"valueCodeableConcept\":{\"coding\":[{\"system\":\"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\"code\":\"hide-help\",\"display\":\"Hide help texts\"},{\"system\":\"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\"code\":\"hide-sublabel\",\"display\":\"Hide sublabel texts\"}]}}],\"id\":\"9c0d8e72-35a5-4b54-b62c-57a1eb12ca8f\",\"item\":[{\"linkId\":\"c381d8fd-f1f3-489b-812d-00ec8a3ff668\",\"type\":\"choice\",\"text\":\"list of providers\",\"required\":false,\"answerOption\":[{\"valueCoding\":{\"id\":\"e42aeb37-77f0-4219-835d-6be6ef4064eb\",\"code\":\"urgent-care\",\"system\":\"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\"display\":\"urgent care\"}},{\"valueCoding\":{\"id\":\"f1d8cb91-9b8b-403c-882a-e231e31cb160\",\"code\":\"primary-care\",\"system\":\"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\"display\":\"primary care\"}},{\"valueCoding\":{\"id\":\"8c0bd819-3476-4fff-f363-ecf39f8f048e\",\"code\":\"virtual-visit\",\"system\":\"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\"display\":\"virtual visit\"}}],\"extension\":[{\"url\":\"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\"valueCodeableConcept\":{\"coding\":[{\"system\":\"http://hl7.org/fhir/ValueSet/questionnaire-item-control\",\"code\":\"radio-button\"}]}}]}]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/questionnaire",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"questionnaire"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "questionnaire Copy",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"resourceType\":\"Questionnaire\",\"language\":\"nb-NO\",\"status\":\"draft\",\"publisher\":\"NHN\",\"meta\":{\"profile\":[\"http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire\"],\"tag\":[{\"system\":\"urn:ietf:bcp:47\",\"code\":\"nb-NO\",\"display\":\"Bokmål\"}]},\"useContext\":[{\"code\":{\"system\":\"http://hl7.org/fhir/ValueSet/usage-context-type\",\"code\":\"focus\",\"display\":\"Clinical Focus\"},\"valueCodeableConcept\":{\"coding\":[{\"system\":\"urn:oid:2.16.578.1.12.4.1.1.8655\"}]}}],\"contact\":[{\"name\":\"http://www.nhn.no\"}],\"subjectType\":[\"Patient\"],\"extension\":[{\"url\":\"http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar\",\"valueCoding\":{\"system\":\"http://helsenorge.no/fhir/ValueSet/sdf-sidebar\",\"code\":\"1\"}},{\"url\":\"http://helsenorge.no/fhir/StructureDefinition/sdf-information-message\",\"valueCoding\":{\"system\":\"http://helsenorge.no/fhir/ValueSet/sdf-information-message\",\"code\":\"1\"}},{\"url\":\"http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility\",\"valueCodeableConcept\":{\"coding\":[{\"system\":\"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\"code\":\"hide-help\",\"display\":\"Hide help texts\"},{\"system\":\"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\"code\":\"hide-sublabel\",\"display\":\"Hide sublabel texts\"}]}}],\"id\":\"9c0d8e72-35a5-4b54-b62c-57a1eb12ca8f\",\"item\":[{\"linkId\":\"c381d8fd-f1f3-489b-812d-00ec8a3ff668\",\"type\":\"choice\",\"text\":\"list of providers\",\"required\":false,\"answerOption\":[{\"valueCoding\":{\"id\":\"e42aeb37-77f0-4219-835d-6be6ef4064eb\",\"code\":\"urgent-care\",\"system\":\"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\"display\":\"urgent care\"}},{\"valueCoding\":{\"id\":\"f1d8cb91-9b8b-403c-882a-e231e31cb160\",\"code\":\"primary-care\",\"system\":\"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\"display\":\"primary care\"}},{\"valueCoding\":{\"id\":\"8c0bd819-3476-4fff-f363-ecf39f8f048e\",\"code\":\"virtual-visit\",\"system\":\"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\"display\":\"virtual visit\"}}],\"extension\":[{\"url\":\"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\"valueCodeableConcept\":{\"coding\":[{\"system\":\"http://hl7.org/fhir/ValueSet/questionnaire-item-control\",\"code\":\"radio-button\"}]}}]}]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/questionnaire/9c0d8e72-35a5-4b54-b62c-57a1eb12ca8f",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"questionnaire",
+						"9c0d8e72-35a5-4b54-b62c-57a1eb12ca8f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "quest-resp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"questionnaire_resp\": {\n        \"resourceType\": \"QuestionnaireResponse\",\n        \"id\": \"9c0d8e72-35a5-4b54-b62c-57a1eb12ca8f\",\n        \"status\": \"in-progress\",\n        \"item\": [\n            {\n                \"linkId\": \"c381d8fd-f1f3-489b-812d-00ec8a3ff668\",\n                \"text\": \"list of providers\",\n                \"answer\": [\n                    {\n                        \"valueCoding\": {\n                            \"code\": \"urgent-care\",\n                            \"display\": \"urgent care\",\n                            \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\"\n                        }\n                    }\n                ]\n            }\n        ]\n    },\n    \"q_ids\": [\n        \"9c0d8e72-35a5-4b54-b62c-57a1eb12ca8f\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/questionnaire-resp",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"questionnaire-resp"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
