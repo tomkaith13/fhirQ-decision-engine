@@ -76,6 +76,32 @@ func main() {
 		w.Write([]byte(resp))
 	})
 
+	r.Get("/questionnaire/{id}", func(w http.ResponseWriter, r *http.Request) {
+		id := chi.URLParam(r, "id")
+
+		questionnaire, ok := qMap[id]
+		if !ok {
+			w.WriteHeader(http.StatusNotFound)
+			w.Write([]byte("questionnaire does not exist"))
+			return
+		}
+		pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+		resp, err := pMarshaller.MarshalResourceToString(questionnaire)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(resp))
+	})
+
 	r.Post("/questionnaire-resp", func(w http.ResponseWriter, r *http.Request) {
 		dec := json.NewDecoder(r.Body)
 		qrBody := questionnaire_resp_model.QRBody{}
