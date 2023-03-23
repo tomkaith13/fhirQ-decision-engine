@@ -25,7 +25,7 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	qMap := make(map[string]*questionnaire_go_proto.Questionnaire)
+	// questionnaire_collection.QMap := make(map[string]*questionnaire_go_proto.Questionnaire)
 
 	r.Post("/questionnaire", func(w http.ResponseWriter, r *http.Request) {
 		questionnaireJson, err := ioutil.ReadAll(r.Body)
@@ -43,7 +43,7 @@ func main() {
 		containedResource := unmarshalled.(*r4pb.ContainedResource)
 
 		q := containedResource.GetQuestionnaire()
-		if _, ok := qMap[q.Id.Value]; ok {
+		if _, ok := questionnaire_collection.QMap[q.Id.Value]; ok {
 			w.WriteHeader(http.StatusConflict)
 			w.Write([]byte("id already exists"))
 			return
@@ -55,8 +55,8 @@ func main() {
 			},
 		})
 		id := q.GetId().Value
-		if _, ok := questionnaire_collection.FhirQmap[id]; !ok {
-			questionnaire_collection.FhirQmap[id] = *q
+		if _, ok := questionnaire_collection.QMap[id]; !ok {
+			questionnaire_collection.QMap[id] = q
 		}
 		pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
 		if err != nil {
@@ -71,7 +71,7 @@ func main() {
 			w.Write([]byte(err.Error()))
 			return
 		}
-		qMap[q.Id.Value] = q
+		questionnaire_collection.QMap[q.Id.Value] = q
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(resp))
 	})
@@ -79,7 +79,7 @@ func main() {
 	r.Get("/questionnaire/{id}", func(w http.ResponseWriter, r *http.Request) {
 		id := chi.URLParam(r, "id")
 
-		questionnaire, ok := qMap[id]
+		questionnaire, ok := questionnaire_collection.QMap[id]
 		if !ok {
 			w.WriteHeader(http.StatusNotFound)
 			w.Write([]byte("questionnaire does not exist"))
