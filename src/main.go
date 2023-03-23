@@ -114,7 +114,7 @@ func main() {
 			return
 
 		}
-		fmt.Println(qrBody.QuestionnaireIds)
+		fmt.Println("ids::::::::", qrBody.QuestionnaireIds)
 
 		regJsonMarshalledData, err := json.Marshal(qrBody.QuestionnaireResponse)
 		if err != nil {
