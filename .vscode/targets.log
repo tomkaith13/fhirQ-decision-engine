@@ -6,11 +6,8 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
- 
-make: *** No rule to make target `all'.  Stop.
 
-
-# Make data base, printed on Mon Jun 27 09:46:15 2022
+# Make data base, printed on Wed Mar 29 21:12:20 2023
 
 # Variables
 
@@ -19,7 +16,7 @@ make: *** No rule to make target `all'.  Stop.
 # automatic
 ?F = $(notdir $?)
 # environment
-VSCODE_LOG_NATIVE = false
+VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # automatic
@@ -27,67 +24,63 @@ VSCODE_LOG_NATIVE = false
 # automatic
 @F = $(notdir $@)
 # makefile
-CURDIR := /Users/bthomas/league-repos/fhirQ-decision-engine
+CURDIR := /Users/bthomas-mac/personal/go-experiments/fhirQ-decision-engine
 # makefile
 SHELL = /bin/sh
 # environment
-VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+VSCODE_NLS_CONFIG = {"locale":"en-ca","availableLanguages":{},"_languagePackSupport":true}
 # environment
 _ = /usr/bin/make
 # makefile (from `Makefile', line 1)
 MAKEFILE_LIST :=  Makefile
 # environment
-GO111MODULE = on
-# environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
-# environment
-VSCODE_VERBOSE_LOGGING = true
 # environment
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/kj/bnsvmyw96zl8s7yg5mcys48w0000gn/T/vscode-ipc-7ce9d5ae-fc4a-4fe7-882a-88236971e6e8.sock
+INFOPATH = /opt/homebrew/share/info:
 # environment
 VSCODE_CWD = /
 # environment
 GOPROXY = https://proxy.golang.org,direct
 # environment
-PATH = /usr/local/go/bin:/Users/bthomas/google-cloud-sdk/bin:/Users/bthomas/go/bin:/Users/bthomas/league-scripts:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
+PATH = /Users/bthomas-mac/bin:/usr/local/bin:/Users/bthomas-mac/league-scripts:/Users/bthomas-mac/go/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin
 # environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
-GOPATH = /Users/bthomas/go
-# environment
-LaunchInstanceID = C0DB16B4-8A7B-4DA6-8827-BCBD0870954F
-# environment
-VSCODE_LOG_STACK = false
+GOPATH = /Users/bthomas-mac/go
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.vCrOsmPE1F/Listeners
+LS_COLORS = di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.nHUpAHlfYX/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
-VSCODE_PIPE_LOGGING = true
+PWD = /Users/bthomas-mac/personal/go-experiments/fhirQ-decision-engine
 # environment
-PWD = /Users/bthomas/league-repos/fhirQ-decision-engine
+HOMEBREW_CELLAR = /opt/homebrew/Cellar
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = undefined
 # environment
-GOMODCACHE = /Users/bthomas/go/pkg/mod
+MANPATH = /opt/homebrew/share/man::
 # environment
-HOME = /Users/bthomas
+GOMODCACHE = /Users/bthomas-mac/go/pkg/mod
+# environment
+HOME = /Users/bthomas-mac
 # default
 MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/bthomas/Library/Application Support/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
+VSCODE_CODE_CACHE_PATH = /Users/bthomas-mac/Library/Application Support/Code/CachedData/ee2b180d582a7f601fa6ecfdad8d9fd269ab1884
 # environment
-LOGNAME = bthomas
+LOGNAME = bthomas-mac
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
-ZSH = /Users/bthomas/.oh-my-zsh
+ZSH = /Users/bthomas-mac/.oh-my-zsh
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
@@ -100,14 +93,14 @@ MAKE = $(MAKE_COMMAND)
 MAKECMDGOALS := all
 # environment
 SHLVL = 1
+# environment
+VSCODE_CRASH_REPORTER_SANDBOXED_HINT = 1
 # default
 MAKE_VERSION := 3.81
 # environment
-USER = bthomas
+USER = bthomas-mac
 # makefile
 .DEFAULT_GOAL := run
-# environment
-GOROOT = /usr/local/go
 # environment
 LESS = -R
 # automatic
@@ -117,11 +110,13 @@ MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
 # default
 .VARIABLES := 
 # environment
-TMPDIR = /var/folders/kj/bnsvmyw96zl8s7yg5mcys48w0000gn/T/
+TMPDIR = /var/folders/bc/ck3y75t936q7rl0tv7z0c68h0000gn/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/bthomas/Library/Application Support/Code/1.68.1-main.sock
+VSCODE_IPC_HOOK = /Users/bthomas-mac/Library/Application Support/Code/1.76-main.sock
+# environment
+MallocNanoZone = 0
 # makefile
 MAKEFLAGS = Rrqp
 # environment
@@ -129,11 +124,15 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.142592354.142592360
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.22448455.22448461
+# environment
+HOMEBREW_PREFIX = /opt/homebrew
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
 +F = $(notdir $+)
+# environment
+HOMEBREW_REPOSITORY = /opt/homebrew
 # environment
 __CF_USER_TEXT_ENCODING = 0x1F5:0x0:0x52
 # environment
@@ -146,22 +145,18 @@ MAKEFILES :=
 PAGER = less
 # environment
 LC_ALL = C
-# environment
-SECURITYSESSIONID = 186aa
 # automatic
 ^F = $(notdir $^)
 # default
 SUFFIXES := 
-# default
-.INCLUDE_DIRS = /usr/local/include
 # environment
 MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 2288
+VSCODE_PID = 17889
 # variable set hash-table stats:
-# Load=73/1024=7%, Rehash=0, Collisions=2/97=2%
+# Load=72/1024=7%, Rehash=0, Collisions=2/95=2%
 
 # Pattern-specific Variable Values
 
@@ -169,9 +164,9 @@ VSCODE_PID = 2288
 
 # Directories
 
-# . (device 16777221, inode 147486005): 12 files, no impossibilities.
+# . (device 16777233, inode 23029515): 13 files, no impossibilities.
 
-# 12 files, no impossibilities in 1 directories.
+# 13 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -205,7 +200,7 @@ docker-build:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-26 17:05:33
+#  Last modified 2023-03-22 17:45:23
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -254,6 +249,8 @@ docker-image-clean:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Mon Jun 27 09:46:15 2022
+# Finished Make data base on Wed Mar 29 21:12:20 2023
 
  
+make: *** No rule to make target `all'.  Stop.
+

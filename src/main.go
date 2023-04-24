@@ -15,6 +15,7 @@ import (
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/datatypes_go_proto"
 	r4pb "github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/bundle_and_contained_resource_go_proto"
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/questionnaire_go_proto"
+	"github.com/tomkaith13/fhirQuestionnaireEngine/src/figma"
 	"github.com/tomkaith13/fhirQuestionnaireEngine/src/questionnaire_collection"
 	"github.com/tomkaith13/fhirQuestionnaireEngine/src/questionnaire_resp_model"
 )
@@ -150,6 +151,25 @@ func main() {
 		fmt.Println(qr.GetId())
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("{\" Unable to process resp id\": \"" + qr.GetId().Value + "\"}"))
+	})
+
+	r.Post("/fighir", func(w http.ResponseWriter, r *http.Request) {
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			log.Fatalln(err)
+			return
+		}
+
+		tree := figma.FigmaDoc{}
+		err = json.Unmarshal(body, &tree)
+		if err != nil {
+			log.Fatalln(err)
+			return
+		}
+
+		w.WriteHeader(http.StatusCreated)
+		w.Write([]byte(fmt.Sprintf("%+v", tree)))
+
 	})
 	http.ListenAndServe(":8080", r)
 }
