@@ -19,6 +19,21 @@ func dfs(node *FigmaNode) *questionnaire_go_proto.Questionnaire_Item {
 		qItem.Type = &questionnaire_go_proto.Questionnaire_Item_TypeCode{}
 		qItem.Type.Value = codes_go_proto.QuestionnaireItemTypeCode_GROUP
 
+		if node.Name == "fhir_choice" {
+			// now we need to not recurse and build more nodes by add answerOption
+			qItem.AnswerOption = []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{}
+			for _, innerC := range node.Children {
+				option := questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+							StringValue: &datatypes_go_proto.String{
+								Value: innerC.Name}}},
+				}
+				qItem.AnswerOption = append(qItem.AnswerOption, &option)
+			}
+
+		}
+
 	case "TEXT":
 		qItem.Text = &datatypes_go_proto.String{Value: node.Name}
 	}
