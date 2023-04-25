@@ -31,6 +31,7 @@ func dfs(node *FigmaNode) *questionnaire_go_proto.Questionnaire_Item {
 				}
 				qItem.AnswerOption = append(qItem.AnswerOption, &option)
 			}
+			return qItem
 
 		}
 
