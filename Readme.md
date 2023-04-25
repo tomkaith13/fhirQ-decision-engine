@@ -267,5 +267,8 @@ This endpoint accepts a Figma json graph and uses it to extract node and constru
 
 See Postman for a sample body
 
+### Design assumptions
+ - If we want to include a multiple choice Frame from Figma, we need to name the Frame as `fhir_choice` AND each inner child frame should have the same name as the text element. See ![layers screenshot](figma-layers.png "Layers of the questionnaire in Figma")
+
 
 
