@@ -19,6 +19,10 @@ func dfs(node *FigmaNode) *questionnaire_go_proto.Questionnaire_Item {
 		qItem.Type = &questionnaire_go_proto.Questionnaire_Item_TypeCode{}
 		qItem.Type.Value = codes_go_proto.QuestionnaireItemTypeCode_GROUP
 
+		// Now this is where design liberties play in to make our lives easier.
+		// Figma parses the frame for the radio buttons as a whole group with level depth of 2 to get the radio button instance and the text.
+		// We now assume the Frame of the user has the same text as the text element inside it.
+		// This way, we dont need to peek 2 levels in and get the name we desire to add in AnswerOptions of the FHIR Questionnaire.
 		if node.Name == "fhir_choice" {
 			// now we need to not recurse and build more nodes by add answerOption
 			qItem.AnswerOption = []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{}
