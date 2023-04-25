@@ -42,8 +42,6 @@ func FigmaToFhirQuestionnaireConvertor(tree FigmaDoc) *questionnaire_go_proto.Qu
 	// All types TEXT or INSTANCE is used to generate a radio button.
 	for _, c := range tree.Document.Children {
 		q.Item = append(q.Item, dfs(&c))
-		// dfs(&c, q.Item)
 	}
-	// fmt.Printf("\n\n\n q::::%+v\n\n", q)
 	return q
 }
