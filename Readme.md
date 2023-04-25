@@ -241,10 +241,11 @@ curl --location --request POST 'localhost:8080/questionnaire-resp' --header 'Con
 
 ## [Figma](https://www.figma.com/pricing/) -> FHIR Questionnaire (aka Fighir)
 Users need an easy way to create a FHIR Questionnaire and one of the common tools used is Figma.
-So what if we can create the form in Figma and then generate a FHIR Questionnaire using it :thinking_face:
+So what if we can create the form in Figma and then generate a FHIR Questionnaire using it 	🤔
 
 ![figma screenshot](figma.png "sample questionnaire created in figma")
 
+That led me down this 🐇 hole.....
 Hence `Fighir` was born.
 
 ### Figma REST apis
