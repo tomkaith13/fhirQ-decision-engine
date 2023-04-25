@@ -1,6 +1,7 @@
 package figma
 
 import (
+	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/codes_go_proto"
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/datatypes_go_proto"
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/questionnaire_go_proto"
 )
@@ -14,14 +15,14 @@ import (
 // 		qItem = &questionnaire_go_proto.Questionnaire_Item{}
 // 	}
 // 	qItem.Id = &datatypes_go_proto.String{Value: node.Id}
-// 	switch node.Type {
-// 	case "FRAME":
-// 		qItem.Type = &questionnaire_go_proto.Questionnaire_Item_TypeCode{}
-// 		qItem.Type.Value = codes_go_proto.QuestionnaireItemTypeCode_GROUP
+// switch node.Type {
+// case "FRAME":
+// 	qItem.Type = &questionnaire_go_proto.Questionnaire_Item_TypeCode{}
+// 	qItem.Type.Value = codes_go_proto.QuestionnaireItemTypeCode_GROUP
 
-// 	case "TEXT":
-// 		qItem.Text = &datatypes_go_proto.String{Value: node.Name}
-// 	}
+// case "TEXT":
+// 	qItem.Text = &datatypes_go_proto.String{Value: node.Name}
+// }
 
 // 	for _, c := range node.Children {
 // 		// fmt.Printf("index: %v and child: %+v\n", i, c)
@@ -40,6 +41,15 @@ func dfs(node *FigmaNode) *questionnaire_go_proto.Questionnaire_Item {
 
 	qItem := &questionnaire_go_proto.Questionnaire_Item{}
 	qItem.Id = &datatypes_go_proto.String{Value: node.Id}
+
+	switch node.Type {
+	case "FRAME":
+		qItem.Type = &questionnaire_go_proto.Questionnaire_Item_TypeCode{}
+		qItem.Type.Value = codes_go_proto.QuestionnaireItemTypeCode_GROUP
+
+	case "TEXT":
+		qItem.Text = &datatypes_go_proto.String{Value: node.Name}
+	}
 
 	// TBD add more processing here.
 
