@@ -166,9 +166,23 @@ func main() {
 			log.Fatalln(err)
 			return
 		}
+		q := figma.FigmaToFhirQuestionnaireConvertor(tree)
+
+		pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+		resp, err := pMarshaller.MarshalResourceToString(q)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(fmt.Sprintf("%+v", tree)))
+		w.Write([]byte(fmt.Sprintf("%+v", resp)))
 
 	})
 	http.ListenAndServe(":8080", r)
