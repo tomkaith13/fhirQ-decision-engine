@@ -239,4 +239,32 @@ curl --location --request POST 'localhost:8080/questionnaire-resp' --header 'Con
 }'
 ```
 
+## [Figma](https://www.figma.com/pricing/) -> FHIR Questionnaire (aka Fighir)
+Users need an easy way to create a FHIR Questionnaire and one of the common tools used is Figma.
+So what if we can create the form in Figma and then generate a FHIR Questionnaire using it :thinking_face:
+
+![figma screenshot](figma.png "sample questionnaire created in figma")
+
+Hence `Fighir` was born.
+
+### Figma REST apis
+Figma APIs provide a way for extract a form extracted from the screen.
+See https://www.figma.com/developers/api#intro for details.
+
+See the [authentication](https://www.figma.com/developers/api#authentication) link to look into to oauth or personal access tokens for a workspace.
+
+We can use the Figma files endpoint to extract all the elements drawn onto a screen.
+
+The data extracted looks like a graph.
+
+Once this graph is extracted from Figma, we can easily use DFS along with some processing to construct a FHIR Questionnaire.
+
+
+### Endpoints
+#### POST /fighir 
+This endpoint accepts a Figma json graph and uses it to extract node and construct a FHIR Questionnaire which is returned using the json marshaller from Google.
+
+See Postman for a sample body
+
+
 
