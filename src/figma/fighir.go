@@ -35,6 +35,7 @@ func dfs(node *FigmaNode) *questionnaire_go_proto.Questionnaire_Item {
 				}
 				qItem.AnswerOption = append(qItem.AnswerOption, &option)
 			}
+			// Now, we return here to avoid creating nested nodes.
 			return qItem
 
 		}
