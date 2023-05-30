@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -93,6 +94,96 @@ func main() {
 			return
 		}
 		resp, err := pMarshaller.MarshalResourceToString(questionnaire)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(resp))
+	})
+
+	r.Get("/mapper", func(w http.ResponseWriter, r *http.Request) {
+		tenantJson := `{
+			"da_reasons": null,
+			"workflow_node": {
+			  "da_workflow_node_id": 0,
+			  "workflow_questions": [
+				{
+				  "da_workflow_question_id": 0,
+				  "workflow_question_text": "How old are you",
+				  "workflow_question_ui": "date",
+				  "workflow_question_tag": "DOB",
+				  "workflow_question_answer_data_type": "string",
+				  "workflow_question_answers": [
+					{
+					  "da_workflow_question_answer_id": 0,
+					  "workflow_question_answer_text": "string",
+					  "workflow_question_answer_value": "string"
+					}
+				  ]
+				}
+			  ]
+			},
+			"da_time": null,
+			"message": null
+		  }`
+
+		tenantQ := &questionnaire_collection.DaQuesionnaire{}
+		err := json.Unmarshal([]byte(tenantJson), tenantQ)
+		if err != nil {
+			fmt.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+
+		fmt.Printf("%+v", tenantQ)
+
+		q := &questionnaire_go_proto.Questionnaire{}
+		Qnode := tenantQ.QNode
+		sId := strconv.Itoa(Qnode.Id)
+		q.Id = &datatypes_go_proto.Id{Value: sId}
+
+		// now add questions as items
+		questions := Qnode.QQuestions
+
+		for _, question := range questions {
+			qId := strconv.Itoa(question.Id)
+			qItem := &questionnaire_go_proto.Questionnaire_Item{
+				Id: &datatypes_go_proto.String{
+					Value: qId,
+				},
+				Text: &datatypes_go_proto.String{
+					Value: question.QText,
+				},
+			}
+			// add custom mappers
+			if question.QUICode == "date" {
+				qItem.Extension = append(qItem.Extension, &datatypes_go_proto.Extension{
+					Id: &datatypes_go_proto.String{Value: "0.1"},
+					Value: &datatypes_go_proto.Extension_ValueX{
+						Choice: &datatypes_go_proto.Extension_ValueX_StringValue{StringValue: &datatypes_go_proto.String{
+							Value: "date",
+						}},
+					},
+				})
+			}
+			q.Item = append(q.Item, qItem)
+		}
+
+		fmt.Printf("%+v", q)
+
+		// formatter
+		pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+
+		resp, err := pMarshaller.MarshalResourceToString(q)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(err.Error()))
