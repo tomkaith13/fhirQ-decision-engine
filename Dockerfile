@@ -1,4 +1,4 @@
-FROM golang:1.18-alpine
+FROM golang:latest
 
 WORKDIR /app
 
@@ -6,10 +6,11 @@ COPY go.mod ./
 COPY go.sum ./
 RUN go mod download
 
-COPY src/*.go ./
+COPY . ./
 
-RUN go build -o /fhirQuestionnaireEngine
+RUN go build -o /main src/main.go
+RUN ls -la
 
 EXPOSE 8080
 
-CMD [ "/fhirQuestionnaireEngine" ]
+CMD [ "/main" ]
