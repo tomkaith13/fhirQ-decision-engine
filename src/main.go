@@ -17,6 +17,7 @@ import (
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/datatypes_go_proto"
 	r4pb "github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/bundle_and_contained_resource_go_proto"
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/questionnaire_go_proto"
+	"github.com/masterminds/semver"
 	"github.com/tomkaith13/fhirQuestionnaireEngine/src/figma"
 	"github.com/tomkaith13/fhirQuestionnaireEngine/src/questionnaire_collection"
 	"github.com/tomkaith13/fhirQuestionnaireEngine/src/questionnaire_resp_model"
@@ -311,8 +312,11 @@ func main() {
 
 		q := &questionnaire_go_proto.Questionnaire{}
 		q.Id = &datatypes_go_proto.Id{Value: "1"}
+
+		semVer, _ := semver.NewVersion("1.1.0")
+
 		q.Item = append(q.Item, &questionnaire_go_proto.Questionnaire_Item{
-			Id:       &datatypes_go_proto.String{Value: "1.1"},
+			Id:       &datatypes_go_proto.String{Value: semVer.String()},
 			Required: &datatypes_go_proto.Boolean{Value: false},
 			Text:     &datatypes_go_proto.String{Value: "Message Subject"},
 			Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
@@ -363,8 +367,10 @@ func main() {
 			})
 		}
 
+		newVersion := semVer.IncMinor()
+
 		q.Item = append(q.Item, &questionnaire_go_proto.Questionnaire_Item{
-			Id:       &datatypes_go_proto.String{Value: "1.2"},
+			Id:       &datatypes_go_proto.String{Value: newVersion.String()},
 			Required: &datatypes_go_proto.Boolean{Value: true},
 			Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
 				Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
