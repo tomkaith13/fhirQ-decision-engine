@@ -25,3 +25,18 @@ type DaQuestionnaireNode struct {
 type DaQuesionnaire struct {
 	QNode DaQuestionnaireNode `json:"workflow_node"`
 }
+
+type FamilyMember struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+}
+
+type CareAdvisor struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+}
+
+type FamilyAccount struct {
+	FamilyMembers []FamilyMember `json:"familyMembers"`
+	CareAdvisor   CareAdvisor    `json:"careAdvisor"`
+}
