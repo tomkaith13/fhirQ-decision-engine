@@ -199,104 +199,27 @@ func main() {
 	r.Get("/transform-from-json-2", func(w http.ResponseWriter, r *http.Request) {
 		tenantJson := `
 		{
-			"subscriberId": "3333312345",
-			"sensId": "001S000001UYphLIAT",
-			"overviewSensId": "a1iS0000001LRPzIAO",
-			"familyMembers": [{
-					"status": "Invited",
-					"smsOptIn": false,
-					"sensId": "001S000001UYphJIAT",
-					"removedDate": null,
-					"relationship": "Spouse/Domestic Partner",
-					"registeredDate": null,
-					"preferredName": null,
-					"overviewSensId": "a1oS00000022RF4IAM",
+			"familyMembers": [
+				{
 					"middleName": null,
-					"memberUserSensId": "005S000000RJq22IAD",
 					"lastName": "Sukla",
-					"isPao": false,
-					"isNonPolicy": false,
-					"invitedDate": "2022-11-08",
-					"gender": null,
-					"firstName": "Ahuja",
-					"emailOptIn": false,
-					"email": "sample234@gmail.com",
-					"dateOfBirth": "1949-06-08",
-					"address": {
-						"zipcode": null,
-						"state": null,
-						"country": null,
-						"city": null,
-						"address": null
-					},
-					"addedDate": "2022-06-07"
+					"firstName": "Ahuja"
 				},
 				{
-					"status": "Registered",
-					"smsOptIn": false,
-					"sensId": "001S000001UYphKIAT",
-					"removedDate": null,
-					"relationship": "Subscriber/Recipient",
-					"registeredDate": "2022-06-07",
-					"preferredName": null,
-					"overviewSensId": "a1oS00000022RF5IAM",
 					"middleName": null,
-					"memberUserSensId": "005S000000QOAJOIA5",
 					"lastName": "Sukla",
-					"isPao": true,
-					"isNonPolicy": false,
-					"invitedDate": "2022-06-07",
-					"gender": null,
-					"firstName": "Ankith",
-					"emailOptIn": true,
-					"email": "sheelrathan.shinde@optum.com",
-					"dateOfBirth": "1961-05-31",
-					"address": {
-						"zipcode": null,
-						"state": null,
-						"country": null,
-						"city": null,
-						"address": null
-					},
-					"addedDate": "2022-06-07"
+					"firstName": "Ankith"
 				},
 				{
-					"status": "Invited",
-					"smsOptIn": false,
-					"sensId": "001S000001aH2BJIA0",
-					"removedDate": null,
-					"relationship": null,
-					"registeredDate": null,
-					"preferredName": null,
-					"overviewSensId": null,
 					"middleName": null,
-					"memberUserSensId": "005S000000RJu1cIAD",
 					"lastName": "shukla",
-					"isPao": false,
-					"isNonPolicy": false,
-					"invitedDate": "2022-11-04",
-					"gender": null,
-					"firstName": "ranjith",
-					"emailOptIn": false,
-					"email": "testtesttest@tmail.com",
-					"dateOfBirth": null,
-					"address": {
-						"zipcode": null,
-						"state": null,
-						"country": null,
-						"city": null,
-						"address": null
-					},
-					"addedDate": "2022-11-04"
+					"firstName": "ranjith"
 				}
 			],
 			"careAdvisor": {
-				"status": "Primary",
-				"sensId": "005S000000QMJTgIAP",
 				"role": "Care Advisor",
 				"lastName": "Care Advisor",
-				"firstName": "Sheelrathan",
-				"bio": null
+				"firstName": "Sheelrathan"
 			}
 		}
 		`
