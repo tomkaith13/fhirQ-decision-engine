@@ -242,7 +242,16 @@ func main() {
 			Value: &datatypes_go_proto.Extension_ValueX{
 				Choice: &datatypes_go_proto.Extension_ValueX_StringValue{
 					StringValue: &datatypes_go_proto.String{
-						Value: "Create message",
+						Value: "submit-text:Create message",
+					},
+				},
+			},
+		})
+		q.Extension = append(q.Extension, &datatypes_go_proto.Extension{
+			Value: &datatypes_go_proto.Extension_ValueX{
+				Choice: &datatypes_go_proto.Extension_ValueX_StringValue{
+					StringValue: &datatypes_go_proto.String{
+						Value: "button-location:bottom",
 					},
 				},
 			},
