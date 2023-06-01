@@ -106,7 +106,7 @@ func main() {
 		w.Write([]byte(resp))
 	})
 
-	r.Get("/mapper", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/transform-from-json-1", func(w http.ResponseWriter, r *http.Request) {
 		tenantJson := `{
 			"da_reasons": null,
 			"workflow_node": {
@@ -196,7 +196,7 @@ func main() {
 		w.Write([]byte(resp))
 	})
 
-	r.Get("/mapper2", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/transform-from-json-2", func(w http.ResponseWriter, r *http.Request) {
 		tenantJson := `
 		{
 			"subscriberId": "3333312345",
