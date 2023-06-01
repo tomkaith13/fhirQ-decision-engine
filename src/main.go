@@ -235,6 +235,9 @@ func main() {
 
 		q := &questionnaire_go_proto.Questionnaire{}
 		q.Id = &datatypes_go_proto.Id{Value: "1"}
+		q.Title = &datatypes_go_proto.String{
+			Value: "New Message",
+		}
 
 		semVer, _ := semver.NewVersion("1.1.0")
 
@@ -306,7 +309,7 @@ func main() {
 					Value: &datatypes_go_proto.Extension_ValueX{
 						Choice: &datatypes_go_proto.Extension_ValueX_StringValue{
 							StringValue: &datatypes_go_proto.String{
-								Value: "check-box",
+								Value: "style:check-box",
 							},
 						},
 					},
