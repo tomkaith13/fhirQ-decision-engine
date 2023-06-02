@@ -17,6 +17,7 @@ import (
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/datatypes_go_proto"
 	r4pb "github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/bundle_and_contained_resource_go_proto"
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/questionnaire_go_proto"
+	stu3Codes "github.com/google/fhir/go/proto/google/fhir/proto/stu3/codes_go_proto"
 	"github.com/masterminds/semver"
 	"github.com/tomkaith13/fhirQuestionnaireEngine/src/figma"
 	"github.com/tomkaith13/fhirQuestionnaireEngine/src/questionnaire_collection"
@@ -317,17 +318,26 @@ func main() {
 			Id:       &datatypes_go_proto.String{Value: newVersion.String()},
 			Required: &datatypes_go_proto.Boolean{Value: true},
 			Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-				Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
+				Value: codes_go_proto.QuestionnaireItemTypeCode_OPEN_CHOICE,
 			},
 			Text: &datatypes_go_proto.String{
 				Value: "To",
 			},
 			Extension: []*datatypes_go_proto.Extension{
 				&datatypes_go_proto.Extension{
+					// Value: &datatypes_go_proto.Extension_ValueX{
+					// 	Choice: &datatypes_go_proto.Extension_ValueX_StringValue{
+					// 		StringValue: &datatypes_go_proto.String{
+					// 			Value: "style:check-box",
+					// 		},
+					// 	},
+					// },
 					Value: &datatypes_go_proto.Extension_ValueX{
-						Choice: &datatypes_go_proto.Extension_ValueX_StringValue{
-							StringValue: &datatypes_go_proto.String{
-								Value: "style:check-box",
+						Choice: &datatypes_go_proto.Extension_ValueX_Coding{
+							Coding: &datatypes_go_proto.Coding{
+								Code: &datatypes_go_proto.Code{
+									Value: stu3Codes.QuestionnaireItemUIControlCodesCode_CHECK_BOX.String(),
+								},
 							},
 						},
 					},
