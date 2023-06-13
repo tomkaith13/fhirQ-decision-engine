@@ -183,6 +183,9 @@ func main() {
 				AnswerOption: answers,
 				Extension: []*datatypes_go_proto.Extension{
 					&datatypes_go_proto.Extension{
+						Url: &datatypes_go_proto.Uri{
+							Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+						},
 						Value: &datatypes_go_proto.Extension_ValueX{
 							Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
 								CodeableConcept: &datatypes_go_proto.CodeableConcept{
@@ -204,7 +207,189 @@ func main() {
 			}
 			q.Item = append(q.Item, qi3)
 		case "hm2":
-			// TODO
+			q.Id = &datatypes_go_proto.Id{Value: "hm2"}
+			// Title of page
+			q.Title = &datatypes_go_proto.String{
+				Value: "Message Center",
+			}
+			semVer, _ := semver.NewVersion("1.0.0")
+			// subtitle
+			qi1 := &questionnaire_go_proto.Questionnaire_Item{
+				Id:       &datatypes_go_proto.String{Value: semVer.String()},
+				Required: &datatypes_go_proto.Boolean{Value: true},
+				Text:     &datatypes_go_proto.String{Value: "Callback Preference"},
+				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+					Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
+				},
+			}
+			q.Item = append(q.Item, qi1)
+
+			// secondary text
+			semVer1 := semVer.IncMinor()
+			// subtitle
+			qi2 := &questionnaire_go_proto.Questionnaire_Item{
+				Id:       &datatypes_go_proto.String{Value: semVer1.String()},
+				Required: &datatypes_go_proto.Boolean{Value: true},
+				Text:     &datatypes_go_proto.String{Value: "We may need to call you about personal health information. If we cannot reach you via our message centre, let us know the best time to reach you"},
+				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+					Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
+				},
+			}
+			q.Item = append(q.Item, qi2)
+
+			// phone number
+			semVer2 := semVer1.IncMinor()
+			qi3 := &questionnaire_go_proto.Questionnaire_Item{
+				Id:       &datatypes_go_proto.String{Value: semVer2.String()},
+				Required: &datatypes_go_proto.Boolean{Value: true},
+				Text:     &datatypes_go_proto.String{Value: "Phone"},
+				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+					Value: codes_go_proto.QuestionnaireItemTypeCode_TEXT,
+				},
+				Initial: []*questionnaire_go_proto.Questionnaire_Item_Initial{&questionnaire_go_proto.Questionnaire_Item_Initial{
+					Value: &questionnaire_go_proto.Questionnaire_Item_Initial_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_Initial_ValueX_StringValue{
+							StringValue: &datatypes_go_proto.String{Value: "123-456-7890"},
+						}},
+				},
+				},
+			}
+			q.Item = append(q.Item, qi3)
+
+			// dropbox
+			semVer3 := semVer2.IncMinor()
+
+			answers := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+							StringValue: &datatypes_go_proto.String{
+								Value: "8 a.m - 11 a.m EST",
+							},
+						},
+					},
+				},
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+							StringValue: &datatypes_go_proto.String{
+								Value: "11 a.m - 1 p.m EST",
+							},
+						},
+					},
+				},
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+							StringValue: &datatypes_go_proto.String{
+								Value: "1 p.m - 3 p.m EST",
+							},
+						},
+					},
+				},
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+							StringValue: &datatypes_go_proto.String{
+								Value: "3 p.m - 5 p.m EST",
+							},
+						},
+					},
+				},
+			}
+			qi4 := &questionnaire_go_proto.Questionnaire_Item{
+				Id:       &datatypes_go_proto.String{Value: semVer3.String()},
+				Required: &datatypes_go_proto.Boolean{Value: true},
+				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+					Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
+				},
+				Text: &datatypes_go_proto.String{
+					Value: "Best time to call",
+				},
+				AnswerOption: answers,
+				Extension: []*datatypes_go_proto.Extension{
+					&datatypes_go_proto.Extension{
+						Url: &datatypes_go_proto.Uri{
+							Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+						},
+						Value: &datatypes_go_proto.Extension_ValueX{
+							Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
+								CodeableConcept: &datatypes_go_proto.CodeableConcept{
+									Coding: []*datatypes_go_proto.Coding{
+										{
+											System: &datatypes_go_proto.Uri{
+												Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+											},
+											Code: &datatypes_go_proto.Code{
+												Value: "drop-down",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			}
+			q.Item = append(q.Item, qi4)
+
+			// confirmation radio-button
+			semVer4 := semVer3.IncMinor()
+			answers2 := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+							StringValue: &datatypes_go_proto.String{
+								Value: "Yes",
+							},
+						},
+					},
+				},
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+							StringValue: &datatypes_go_proto.String{
+								Value: "No",
+							},
+						},
+					},
+				},
+			}
+			qi5 := &questionnaire_go_proto.Questionnaire_Item{
+				Id:       &datatypes_go_proto.String{Value: semVer4.String()},
+				Required: &datatypes_go_proto.Boolean{Value: true},
+				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+					Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
+				},
+				Text: &datatypes_go_proto.String{
+					Value: "Best time to call",
+				},
+				AnswerOption: answers2,
+				Extension: []*datatypes_go_proto.Extension{
+					&datatypes_go_proto.Extension{
+						Url: &datatypes_go_proto.Uri{
+							Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+						},
+						Value: &datatypes_go_proto.Extension_ValueX{
+							Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
+								CodeableConcept: &datatypes_go_proto.CodeableConcept{
+									Coding: []*datatypes_go_proto.Coding{
+										{
+											System: &datatypes_go_proto.Uri{
+												Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+											},
+											Code: &datatypes_go_proto.Code{
+												Value: "radio-button",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			}
+			q.Item = append(q.Item, qi5)
 		case "generic":
 			// TODO
 
