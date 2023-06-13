@@ -107,6 +107,126 @@ func main() {
 		w.Write([]byte(resp))
 	})
 
+	r.Get("/mocked-questionnaire/{id}", func(w http.ResponseWriter, r *http.Request) {
+		id := chi.URLParam(r, "id")
+		q := &questionnaire_go_proto.Questionnaire{}
+		switch id {
+		case "hm1":
+			q.Id = &datatypes_go_proto.Id{Value: "hm1"}
+			// Title of page
+			q.Title = &datatypes_go_proto.String{
+				Value: "Message Center",
+			}
+			semVer, _ := semver.NewVersion("1.0.0")
+			// subtitle
+			qi1 := &questionnaire_go_proto.Questionnaire_Item{
+				Id:       &datatypes_go_proto.String{Value: semVer.String()},
+				Required: &datatypes_go_proto.Boolean{Value: true},
+				Text:     &datatypes_go_proto.String{Value: "Select your plan"},
+				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+					Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
+				},
+			}
+			q.Item = append(q.Item, qi1)
+
+			// secondary text
+			semVer1 := semVer.IncMinor()
+			// subtitle
+			qi2 := &questionnaire_go_proto.Questionnaire_Item{
+				Id:       &datatypes_go_proto.String{Value: semVer1.String()},
+				Required: &datatypes_go_proto.Boolean{Value: true},
+				Text:     &datatypes_go_proto.String{Value: "To help ensure we connect you with the right agent, let us know the plan this is related to"},
+				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+					Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
+				},
+			}
+			q.Item = append(q.Item, qi2)
+
+			// Radio buttons
+			semVer2 := semVer1.IncMinor()
+
+			answers := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+							StringValue: &datatypes_go_proto.String{
+								Value: "Dental Wellness Product",
+							},
+						},
+					},
+				},
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+							StringValue: &datatypes_go_proto.String{
+								Value: "Drug-PPO-Blue",
+							},
+						},
+					},
+				},
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+							StringValue: &datatypes_go_proto.String{
+								Value: "Drug-PPO-Red",
+							},
+						},
+					},
+				},
+			}
+			qi3 := &questionnaire_go_proto.Questionnaire_Item{
+				Id:       &datatypes_go_proto.String{Value: semVer2.String()},
+				Required: &datatypes_go_proto.Boolean{Value: true},
+				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+					Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
+				},
+				AnswerOption: answers,
+				Extension: []*datatypes_go_proto.Extension{
+					&datatypes_go_proto.Extension{
+						Value: &datatypes_go_proto.Extension_ValueX{
+							Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
+								CodeableConcept: &datatypes_go_proto.CodeableConcept{
+									Coding: []*datatypes_go_proto.Coding{
+										{
+											System: &datatypes_go_proto.Uri{
+												Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+											},
+											Code: &datatypes_go_proto.Code{
+												Value: "radio-button",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			}
+			q.Item = append(q.Item, qi3)
+		case "hm2":
+			// TODO
+		case "generic":
+			// TODO
+
+		}
+		//formatter
+		pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+		resp, err := pMarshaller.MarshalResourceToString(q)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(resp))
+	})
+
 	r.Get("/transform-from-json-1", func(w http.ResponseWriter, r *http.Request) {
 		tenantJson := `{
 			"da_reasons": null,
