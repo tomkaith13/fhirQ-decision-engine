@@ -95,6 +95,312 @@
 			]
 		},
 		{
+			"name": "mapper",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"resourceType\": \"Questionnaire\",\n    \"language\": \"nb-NO\",\n    \"status\": \"draft\",\n    \"publisher\": \"NHN\",\n    \"meta\": {\n        \"profile\": [\n            \"http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire\"\n        ],\n        \"tag\": [\n            {\n                \"system\": \"urn:ietf:bcp:47\",\n                \"code\": \"nb-NO\",\n                \"display\": \"Bokmål\"\n            }\n        ]\n    },\n    \"useContext\": [\n        {\n            \"code\": {\n                \"system\": \"http://hl7.org/fhir/ValueSet/usage-context-type\",\n                \"code\": \"focus\",\n                \"display\": \"Clinical Focus\"\n            },\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"urn:oid:2.16.578.1.12.4.1.1.8655\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"contact\": [\n        {\n            \"name\": \"http://www.nhn.no\"\n        }\n    ],\n    \"subjectType\": [\n        \"Patient\"\n    ],\n    \"extension\": [\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-sidebar\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-information-message\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-information-message\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility\",\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-help\",\n                        \"display\": \"Hide help texts\"\n                    },\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-sublabel\",\n                        \"display\": \"Hide sublabel texts\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"id\": \"main-menu\",\n    \"item\": [\n        {\n            \"linkId\": \"c381d8fd-f1f3-489b-812d-00ec8a3ff668\",\n            \"type\": \"choice\",\n            \"text\": \"list of providers\",\n            \"required\": false,\n            \"answerOption\": [\n                {\n                    \"valueCoding\": {\n                        \"id\": \"e42aeb37-77f0-4219-835d-6be6ef4064eb\",\n                        \"code\": \"urgent-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"urgent care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"f1d8cb91-9b8b-403c-882a-e231e31cb160\",\n                        \"code\": \"primary-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"primary care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"8c0bd819-3476-4fff-f363-ecf39f8f048e\",\n                        \"code\": \"virtual-visit\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"virtual visit\"\n                    }\n                }\n            ],\n            \"extension\": [\n                {\n                    \"url\": \"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\n                    \"valueCodeableConcept\": {\n                        \"coding\": [\n                            {\n                                \"system\": \"http://hl7.org/fhir/ValueSet/questionnaire-item-control\",\n                                \"code\": \"radio-button\"\n                            }\n                        ]\n                    }\n                }\n            ]\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/mapper",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mapper"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "main-menu",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resourceType\": \"Questionnaire\",\n    \"language\": \"nb-NO\",\n    \"status\": \"draft\",\n    \"publisher\": \"NHN\",\n    \"meta\": {\n        \"profile\": [\n            \"http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire\"\n        ],\n        \"tag\": [\n            {\n                \"system\": \"urn:ietf:bcp:47\",\n                \"code\": \"nb-NO\",\n                \"display\": \"Bokmål\"\n            }\n        ]\n    },\n    \"useContext\": [\n        {\n            \"code\": {\n                \"system\": \"http://hl7.org/fhir/ValueSet/usage-context-type\",\n                \"code\": \"focus\",\n                \"display\": \"Clinical Focus\"\n            },\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"urn:oid:2.16.578.1.12.4.1.1.8655\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"contact\": [\n        {\n            \"name\": \"http://www.nhn.no\"\n        }\n    ],\n    \"subjectType\": [\n        \"Patient\"\n    ],\n    \"extension\": [\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-sidebar\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-information-message\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-information-message\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility\",\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-help\",\n                        \"display\": \"Hide help texts\"\n                    },\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-sublabel\",\n                        \"display\": \"Hide sublabel texts\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"id\": \"main-menu\",\n    \"item\": [\n        {\n            \"linkId\": \"c381d8fd-f1f3-489b-812d-00ec8a3ff668\",\n            \"type\": \"choice\",\n            \"text\": \"list of providers\",\n            \"required\": false,\n            \"answerOption\": [\n                {\n                    \"valueCoding\": {\n                        \"id\": \"e42aeb37-77f0-4219-835d-6be6ef4064eb\",\n                        \"code\": \"urgent-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"urgent care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"f1d8cb91-9b8b-403c-882a-e231e31cb160\",\n                        \"code\": \"primary-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"primary care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"8c0bd819-3476-4fff-f363-ecf39f8f048e\",\n                        \"code\": \"virtual-visit\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"virtual visit\"\n                    }\n                }\n            ],\n            \"extension\": [\n                {\n                    \"url\": \"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\n                    \"valueCodeableConcept\": {\n                        \"coding\": [\n                            {\n                                \"system\": \"http://hl7.org/fhir/ValueSet/questionnaire-item-control\",\n                                \"code\": \"radio-button\"\n                            }\n                        ]\n                    }\n                }\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/questionnaire",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"questionnaire"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "urgent-menu",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resourceType\": \"Questionnaire\",\n    \"language\": \"nb-NO\",\n    \"status\": \"draft\",\n    \"publisher\": \"NHN\",\n    \"meta\": {\n        \"profile\": [\n            \"http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire\"\n        ],\n        \"tag\": [\n            {\n                \"system\": \"urn:ietf:bcp:47\",\n                \"code\": \"nb-NO\",\n                \"display\": \"Bokmål\"\n            }\n        ]\n    },\n    \"useContext\": [\n        {\n            \"code\": {\n                \"system\": \"http://hl7.org/fhir/ValueSet/usage-context-type\",\n                \"code\": \"focus\",\n                \"display\": \"Clinical Focus\"\n            },\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"urn:oid:2.16.578.1.12.4.1.1.8655\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"contact\": [\n        {\n            \"name\": \"http://www.nhn.no\"\n        }\n    ],\n    \"subjectType\": [\n        \"Patient\"\n    ],\n    \"extension\": [\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-sidebar\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-information-message\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-information-message\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility\",\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-help\",\n                        \"display\": \"Hide help texts\"\n                    },\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-sublabel\",\n                        \"display\": \"Hide sublabel texts\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"id\": \"urgent-menu\",\n    \"item\": [\n        {\n            \"linkId\": \"c381d8fd-f1f3-489b-812d-00ec8a3ff668\",\n            \"type\": \"choice\",\n            \"text\": \"list of providers\",\n            \"required\": false,\n            \"answerOption\": [\n                {\n                    \"valueCoding\": {\n                        \"id\": \"e42aeb37-77f0-4219-835d-6be6ef4064eb\",\n                        \"code\": \"urgent-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"urgent care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"f1d8cb91-9b8b-403c-882a-e231e31cb160\",\n                        \"code\": \"primary-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"primary care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"8c0bd819-3476-4fff-f363-ecf39f8f048e\",\n                        \"code\": \"virtual-visit\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"virtual visit\"\n                    }\n                }\n            ],\n            \"extension\": [\n                {\n                    \"url\": \"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\n                    \"valueCodeableConcept\": {\n                        \"coding\": [\n                            {\n                                \"system\": \"http://hl7.org/fhir/ValueSet/questionnaire-item-control\",\n                                \"code\": \"radio-button\"\n                            }\n                        ]\n                    }\n                }\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/questionnaire",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"questionnaire"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "mapper2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"resourceType\": \"Questionnaire\",\n    \"language\": \"nb-NO\",\n    \"status\": \"draft\",\n    \"publisher\": \"NHN\",\n    \"meta\": {\n        \"profile\": [\n            \"http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire\"\n        ],\n        \"tag\": [\n            {\n                \"system\": \"urn:ietf:bcp:47\",\n                \"code\": \"nb-NO\",\n                \"display\": \"Bokmål\"\n            }\n        ]\n    },\n    \"useContext\": [\n        {\n            \"code\": {\n                \"system\": \"http://hl7.org/fhir/ValueSet/usage-context-type\",\n                \"code\": \"focus\",\n                \"display\": \"Clinical Focus\"\n            },\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"urn:oid:2.16.578.1.12.4.1.1.8655\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"contact\": [\n        {\n            \"name\": \"http://www.nhn.no\"\n        }\n    ],\n    \"subjectType\": [\n        \"Patient\"\n    ],\n    \"extension\": [\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-sidebar\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-information-message\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-information-message\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility\",\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-help\",\n                        \"display\": \"Hide help texts\"\n                    },\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-sublabel\",\n                        \"display\": \"Hide sublabel texts\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"id\": \"main-menu\",\n    \"item\": [\n        {\n            \"linkId\": \"c381d8fd-f1f3-489b-812d-00ec8a3ff668\",\n            \"type\": \"choice\",\n            \"text\": \"list of providers\",\n            \"required\": false,\n            \"answerOption\": [\n                {\n                    \"valueCoding\": {\n                        \"id\": \"e42aeb37-77f0-4219-835d-6be6ef4064eb\",\n                        \"code\": \"urgent-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"urgent care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"f1d8cb91-9b8b-403c-882a-e231e31cb160\",\n                        \"code\": \"primary-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"primary care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"8c0bd819-3476-4fff-f363-ecf39f8f048e\",\n                        \"code\": \"virtual-visit\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"virtual visit\"\n                    }\n                }\n            ],\n            \"extension\": [\n                {\n                    \"url\": \"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\n                    \"valueCodeableConcept\": {\n                        \"coding\": [\n                            {\n                                \"system\": \"http://hl7.org/fhir/ValueSet/questionnaire-item-control\",\n                                \"code\": \"radio-button\"\n                            }\n                        ]\n                    }\n                }\n            ]\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/transform-from-json-2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transform-from-json-2"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "main-menu",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resourceType\": \"Questionnaire\",\n    \"language\": \"nb-NO\",\n    \"status\": \"draft\",\n    \"publisher\": \"NHN\",\n    \"meta\": {\n        \"profile\": [\n            \"http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire\"\n        ],\n        \"tag\": [\n            {\n                \"system\": \"urn:ietf:bcp:47\",\n                \"code\": \"nb-NO\",\n                \"display\": \"Bokmål\"\n            }\n        ]\n    },\n    \"useContext\": [\n        {\n            \"code\": {\n                \"system\": \"http://hl7.org/fhir/ValueSet/usage-context-type\",\n                \"code\": \"focus\",\n                \"display\": \"Clinical Focus\"\n            },\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"urn:oid:2.16.578.1.12.4.1.1.8655\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"contact\": [\n        {\n            \"name\": \"http://www.nhn.no\"\n        }\n    ],\n    \"subjectType\": [\n        \"Patient\"\n    ],\n    \"extension\": [\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-sidebar\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-information-message\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-information-message\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility\",\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-help\",\n                        \"display\": \"Hide help texts\"\n                    },\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-sublabel\",\n                        \"display\": \"Hide sublabel texts\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"id\": \"main-menu\",\n    \"item\": [\n        {\n            \"linkId\": \"c381d8fd-f1f3-489b-812d-00ec8a3ff668\",\n            \"type\": \"choice\",\n            \"text\": \"list of providers\",\n            \"required\": false,\n            \"answerOption\": [\n                {\n                    \"valueCoding\": {\n                        \"id\": \"e42aeb37-77f0-4219-835d-6be6ef4064eb\",\n                        \"code\": \"urgent-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"urgent care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"f1d8cb91-9b8b-403c-882a-e231e31cb160\",\n                        \"code\": \"primary-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"primary care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"8c0bd819-3476-4fff-f363-ecf39f8f048e\",\n                        \"code\": \"virtual-visit\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"virtual visit\"\n                    }\n                }\n            ],\n            \"extension\": [\n                {\n                    \"url\": \"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\n                    \"valueCodeableConcept\": {\n                        \"coding\": [\n                            {\n                                \"system\": \"http://hl7.org/fhir/ValueSet/questionnaire-item-control\",\n                                \"code\": \"radio-button\"\n                            }\n                        ]\n                    }\n                }\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/questionnaire",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"questionnaire"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "urgent-menu",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resourceType\": \"Questionnaire\",\n    \"language\": \"nb-NO\",\n    \"status\": \"draft\",\n    \"publisher\": \"NHN\",\n    \"meta\": {\n        \"profile\": [\n            \"http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire\"\n        ],\n        \"tag\": [\n            {\n                \"system\": \"urn:ietf:bcp:47\",\n                \"code\": \"nb-NO\",\n                \"display\": \"Bokmål\"\n            }\n        ]\n    },\n    \"useContext\": [\n        {\n            \"code\": {\n                \"system\": \"http://hl7.org/fhir/ValueSet/usage-context-type\",\n                \"code\": \"focus\",\n                \"display\": \"Clinical Focus\"\n            },\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"urn:oid:2.16.578.1.12.4.1.1.8655\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"contact\": [\n        {\n            \"name\": \"http://www.nhn.no\"\n        }\n    ],\n    \"subjectType\": [\n        \"Patient\"\n    ],\n    \"extension\": [\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-sidebar\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-information-message\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-information-message\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility\",\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-help\",\n                        \"display\": \"Hide help texts\"\n                    },\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-sublabel\",\n                        \"display\": \"Hide sublabel texts\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"id\": \"urgent-menu\",\n    \"item\": [\n        {\n            \"linkId\": \"c381d8fd-f1f3-489b-812d-00ec8a3ff668\",\n            \"type\": \"choice\",\n            \"text\": \"list of providers\",\n            \"required\": false,\n            \"answerOption\": [\n                {\n                    \"valueCoding\": {\n                        \"id\": \"e42aeb37-77f0-4219-835d-6be6ef4064eb\",\n                        \"code\": \"urgent-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"urgent care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"f1d8cb91-9b8b-403c-882a-e231e31cb160\",\n                        \"code\": \"primary-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"primary care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"8c0bd819-3476-4fff-f363-ecf39f8f048e\",\n                        \"code\": \"virtual-visit\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"virtual visit\"\n                    }\n                }\n            ],\n            \"extension\": [\n                {\n                    \"url\": \"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\n                    \"valueCodeableConcept\": {\n                        \"coding\": [\n                            {\n                                \"system\": \"http://hl7.org/fhir/ValueSet/questionnaire-item-control\",\n                                \"code\": \"radio-button\"\n                            }\n                        ]\n                    }\n                }\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/questionnaire",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"questionnaire"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "mocked questionnaire",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"resourceType\": \"Questionnaire\",\n    \"language\": \"nb-NO\",\n    \"status\": \"draft\",\n    \"publisher\": \"NHN\",\n    \"meta\": {\n        \"profile\": [\n            \"http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire\"\n        ],\n        \"tag\": [\n            {\n                \"system\": \"urn:ietf:bcp:47\",\n                \"code\": \"nb-NO\",\n                \"display\": \"Bokmål\"\n            }\n        ]\n    },\n    \"useContext\": [\n        {\n            \"code\": {\n                \"system\": \"http://hl7.org/fhir/ValueSet/usage-context-type\",\n                \"code\": \"focus\",\n                \"display\": \"Clinical Focus\"\n            },\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"urn:oid:2.16.578.1.12.4.1.1.8655\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"contact\": [\n        {\n            \"name\": \"http://www.nhn.no\"\n        }\n    ],\n    \"subjectType\": [\n        \"Patient\"\n    ],\n    \"extension\": [\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-sidebar\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-information-message\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-information-message\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility\",\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-help\",\n                        \"display\": \"Hide help texts\"\n                    },\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-sublabel\",\n                        \"display\": \"Hide sublabel texts\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"id\": \"main-menu\",\n    \"item\": [\n        {\n            \"linkId\": \"c381d8fd-f1f3-489b-812d-00ec8a3ff668\",\n            \"type\": \"choice\",\n            \"text\": \"list of providers\",\n            \"required\": false,\n            \"answerOption\": [\n                {\n                    \"valueCoding\": {\n                        \"id\": \"e42aeb37-77f0-4219-835d-6be6ef4064eb\",\n                        \"code\": \"urgent-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"urgent care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"f1d8cb91-9b8b-403c-882a-e231e31cb160\",\n                        \"code\": \"primary-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"primary care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"8c0bd819-3476-4fff-f363-ecf39f8f048e\",\n                        \"code\": \"virtual-visit\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"virtual visit\"\n                    }\n                }\n            ],\n            \"extension\": [\n                {\n                    \"url\": \"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\n                    \"valueCodeableConcept\": {\n                        \"coding\": [\n                            {\n                                \"system\": \"http://hl7.org/fhir/ValueSet/questionnaire-item-control\",\n                                \"code\": \"radio-button\"\n                            }\n                        ]\n                    }\n                }\n            ]\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/mocked-questionnaire/hm1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mocked-questionnaire",
+						"hm1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "hm1",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resourceType\": \"Questionnaire\",\n    \"language\": \"nb-NO\",\n    \"status\": \"draft\",\n    \"publisher\": \"NHN\",\n    \"meta\": {\n        \"profile\": [\n            \"http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire\"\n        ],\n        \"tag\": [\n            {\n                \"system\": \"urn:ietf:bcp:47\",\n                \"code\": \"nb-NO\",\n                \"display\": \"Bokmål\"\n            }\n        ]\n    },\n    \"useContext\": [\n        {\n            \"code\": {\n                \"system\": \"http://hl7.org/fhir/ValueSet/usage-context-type\",\n                \"code\": \"focus\",\n                \"display\": \"Clinical Focus\"\n            },\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"urn:oid:2.16.578.1.12.4.1.1.8655\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"contact\": [\n        {\n            \"name\": \"http://www.nhn.no\"\n        }\n    ],\n    \"subjectType\": [\n        \"Patient\"\n    ],\n    \"extension\": [\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-sidebar\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-information-message\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-information-message\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility\",\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-help\",\n                        \"display\": \"Hide help texts\"\n                    },\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-sublabel\",\n                        \"display\": \"Hide sublabel texts\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"id\": \"main-menu\",\n    \"item\": [\n        {\n            \"linkId\": \"c381d8fd-f1f3-489b-812d-00ec8a3ff668\",\n            \"type\": \"choice\",\n            \"text\": \"list of providers\",\n            \"required\": false,\n            \"answerOption\": [\n                {\n                    \"valueCoding\": {\n                        \"id\": \"e42aeb37-77f0-4219-835d-6be6ef4064eb\",\n                        \"code\": \"urgent-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"urgent care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"f1d8cb91-9b8b-403c-882a-e231e31cb160\",\n                        \"code\": \"primary-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"primary care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"8c0bd819-3476-4fff-f363-ecf39f8f048e\",\n                        \"code\": \"virtual-visit\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"virtual visit\"\n                    }\n                }\n            ],\n            \"extension\": [\n                {\n                    \"url\": \"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\n                    \"valueCodeableConcept\": {\n                        \"coding\": [\n                            {\n                                \"system\": \"http://hl7.org/fhir/ValueSet/questionnaire-item-control\",\n                                \"code\": \"radio-button\"\n                            }\n                        ]\n                    }\n                }\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/mocked-questionnaire/hm1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"mocked-questionnaire",
+								"hm1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 13 Jun 2023 22:30:48 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1090"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"id\": \"hm1\",\n  \"item\": [\n    {\n      \"id\": \"1.0.0\",\n      \"required\": true,\n      \"text\": \"Select your plan\",\n      \"type\": \"display\"\n    },\n    {\n      \"id\": \"1.1.0\",\n      \"required\": true,\n      \"text\": \"To help ensure we connect you with the right agent, let us know the plan this is related to\",\n      \"type\": \"display\"\n    },\n    {\n      \"answerOption\": [\n        {\n          \"valueString\": \"Dental Wellness Product\"\n        },\n        {\n          \"valueString\": \"Drug-PPO-Blue\"\n        },\n        {\n          \"valueString\": \"Drug-PPO-Red\"\n        }\n      ],\n      \"extension\": [\n        {\n          \"url\": \"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\n          \"valueCodeableConcept\": {\n            \"coding\": [\n              {\n                \"code\": \"radio-button\",\n                \"system\": \"http://hl7.org/fhir/ValueSet/questionnaire-item-control\"\n              }\n            ]\n          }\n        }\n      ],\n      \"id\": \"1.2.0\",\n      \"required\": true,\n      \"type\": \"choice\"\n    }\n  ],\n  \"resourceType\": \"Questionnaire\",\n  \"title\": \"Message Center\"\n}"
+				},
+				{
+					"name": "hm2",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resourceType\": \"Questionnaire\",\n    \"language\": \"nb-NO\",\n    \"status\": \"draft\",\n    \"publisher\": \"NHN\",\n    \"meta\": {\n        \"profile\": [\n            \"http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire\"\n        ],\n        \"tag\": [\n            {\n                \"system\": \"urn:ietf:bcp:47\",\n                \"code\": \"nb-NO\",\n                \"display\": \"Bokmål\"\n            }\n        ]\n    },\n    \"useContext\": [\n        {\n            \"code\": {\n                \"system\": \"http://hl7.org/fhir/ValueSet/usage-context-type\",\n                \"code\": \"focus\",\n                \"display\": \"Clinical Focus\"\n            },\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"urn:oid:2.16.578.1.12.4.1.1.8655\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"contact\": [\n        {\n            \"name\": \"http://www.nhn.no\"\n        }\n    ],\n    \"subjectType\": [\n        \"Patient\"\n    ],\n    \"extension\": [\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-sidebar\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefinition/sdf-information-message\",\n            \"valueCoding\": {\n                \"system\": \"http://helsenorge.no/fhir/ValueSet/sdf-information-message\",\n                \"code\": \"1\"\n            }\n        },\n        {\n            \"url\": \"http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility\",\n            \"valueCodeableConcept\": {\n                \"coding\": [\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-help\",\n                        \"display\": \"Hide help texts\"\n                    },\n                    {\n                        \"system\": \"http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions\",\n                        \"code\": \"hide-sublabel\",\n                        \"display\": \"Hide sublabel texts\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"id\": \"main-menu\",\n    \"item\": [\n        {\n            \"linkId\": \"c381d8fd-f1f3-489b-812d-00ec8a3ff668\",\n            \"type\": \"choice\",\n            \"text\": \"list of providers\",\n            \"required\": false,\n            \"answerOption\": [\n                {\n                    \"valueCoding\": {\n                        \"id\": \"e42aeb37-77f0-4219-835d-6be6ef4064eb\",\n                        \"code\": \"urgent-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"urgent care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"f1d8cb91-9b8b-403c-882a-e231e31cb160\",\n                        \"code\": \"primary-care\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"primary care\"\n                    }\n                },\n                {\n                    \"valueCoding\": {\n                        \"id\": \"8c0bd819-3476-4fff-f363-ecf39f8f048e\",\n                        \"code\": \"virtual-visit\",\n                        \"system\": \"urn:uuid:f40ceed7-7b9b-47bd-9d32-13e07e6a4497\",\n                        \"display\": \"virtual visit\"\n                    }\n                }\n            ],\n            \"extension\": [\n                {\n                    \"url\": \"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\n                    \"valueCodeableConcept\": {\n                        \"coding\": [\n                            {\n                                \"system\": \"http://hl7.org/fhir/ValueSet/questionnaire-item-control\",\n                                \"code\": \"radio-button\"\n                            }\n                        ]\n                    }\n                }\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/mocked-questionnaire/hm2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"mocked-questionnaire",
+								"hm2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 13 Jun 2023 22:28:58 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"id\": \"hm2\",\n  \"item\": [\n    {\n      \"id\": \"1.0.0\",\n      \"required\": true,\n      \"text\": \"Callback Preference\",\n      \"type\": \"display\"\n    },\n    {\n      \"id\": \"1.1.0\",\n      \"required\": true,\n      \"text\": \"We may need to call you about personal health information. If we cannot reach you via our message centre, let us know the best time to reach you\",\n      \"type\": \"display\"\n    },\n    {\n      \"id\": \"1.2.0\",\n      \"initial\": [\n        {\n          \"valueString\": \"123-456-7890\"\n        }\n      ],\n      \"required\": true,\n      \"text\": \"Phone\",\n      \"type\": \"text\"\n    },\n    {\n      \"answerOption\": [\n        {\n          \"valueString\": \"8 a.m - 11 a.m EST\"\n        },\n        {\n          \"valueString\": \"11 a.m - 1 p.m EST\"\n        },\n        {\n          \"valueString\": \"1 p.m - 3 p.m EST\"\n        },\n        {\n          \"valueString\": \"3 p.m - 5 p.m EST\"\n        }\n      ],\n      \"extension\": [\n        {\n          \"url\": \"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\n          \"valueCodeableConcept\": {\n            \"coding\": [\n              {\n                \"code\": \"drop-down\",\n                \"system\": \"http://hl7.org/fhir/ValueSet/questionnaire-item-control\"\n              }\n            ]\n          }\n        }\n      ],\n      \"id\": \"1.3.0\",\n      \"required\": true,\n      \"text\": \"Best time to call\",\n      \"type\": \"choice\"\n    },\n    {\n      \"answerOption\": [\n        {\n          \"valueString\": \"Yes\"\n        },\n        {\n          \"valueString\": \"No\"\n        }\n      ],\n      \"extension\": [\n        {\n          \"url\": \"http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl\",\n          \"valueCodeableConcept\": {\n            \"coding\": [\n              {\n                \"code\": \"radio-button\",\n                \"system\": \"http://hl7.org/fhir/ValueSet/questionnaire-item-control\"\n              }\n            ]\n          }\n        }\n      ],\n      \"id\": \"1.4.0\",\n      \"required\": true,\n      \"text\": \"Best time to call\",\n      \"type\": \"choice\"\n    }\n  ],\n  \"resourceType\": \"Questionnaire\",\n  \"title\": \"Message Center\"\n}"
+				}
+			]
+		},
+		{
 			"name": "fighir",
 			"request": {
 				"method": "POST",
