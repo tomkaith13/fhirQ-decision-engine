@@ -341,7 +341,7 @@ func main() {
 							},
 						},
 					},
-					Url: &datatypes_go_proto.Uri{Value: "whatever you want!!"},
+					Url: &datatypes_go_proto.Uri{Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control"},
 				},
 			},
 			AnswerOption: answers,
