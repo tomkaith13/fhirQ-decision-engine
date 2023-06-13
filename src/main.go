@@ -325,6 +325,8 @@ func main() {
 			},
 			Extension: []*datatypes_go_proto.Extension{
 				&datatypes_go_proto.Extension{
+					// How to make custom extensions
+					//
 					// Value: &datatypes_go_proto.Extension_ValueX{
 					// 	Choice: &datatypes_go_proto.Extension_ValueX_StringValue{
 					// 		StringValue: &datatypes_go_proto.String{
@@ -333,15 +335,32 @@ func main() {
 					// 	},
 					// },
 					Value: &datatypes_go_proto.Extension_ValueX{
-						Choice: &datatypes_go_proto.Extension_ValueX_Coding{
-							Coding: &datatypes_go_proto.Coding{
-								Code: &datatypes_go_proto.Code{
-									Value: stu3Codes.QuestionnaireItemUIControlCodesCode_CHECK_BOX.String(),
+						// How to use Codings directly
+						//
+						// Choice: &datatypes_go_proto.Extension_ValueX_Coding{
+						// 	Coding: &datatypes_go_proto.Coding{
+						// 		Code: &datatypes_go_proto.Code{
+						// 			Value: stu3Codes.QuestionnaireItemUIControlCodesCode_CHECK_BOX.String(),
+						// 		},
+						// 	},
+						// },
+						Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
+							// How to use CodeableConcepts
+							CodeableConcept: &datatypes_go_proto.CodeableConcept{
+								Coding: []*datatypes_go_proto.Coding{
+									{
+										System: &datatypes_go_proto.Uri{
+											Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+										},
+										Code: &datatypes_go_proto.Code{
+											Value: stu3Codes.QuestionnaireItemUIControlCodesCode_CHECK_BOX.String(),
+										},
+									},
 								},
 							},
 						},
 					},
-					Url: &datatypes_go_proto.Uri{Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control"},
+					// Url: &datatypes_go_proto.Uri{Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl"},
 				},
 			},
 			AnswerOption: answers,
