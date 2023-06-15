@@ -335,36 +335,36 @@ func main() {
 
 			// confirmation radio-button
 			semVer4 := semVer3.IncMinor()
-			answers2 := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
-							StringValue: &datatypes_go_proto.String{
-								Value: "Yes",
-							},
-						},
-					},
-				},
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
-							StringValue: &datatypes_go_proto.String{
-								Value: "No",
-							},
-						},
-					},
-				},
-			}
+			// answers2 := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+			// 	&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+			// 		Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+			// 			Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+			// 				StringValue: &datatypes_go_proto.String{
+			// 					Value: "Yes",
+			// 				},
+			// 			},
+			// 		},
+			// 	},
+			// 	&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+			// 		Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+			// 			Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+			// 				StringValue: &datatypes_go_proto.String{
+			// 					Value: "No",
+			// 				},
+			// 			},
+			// 		},
+			// 	},
+			// }
 			qi5 := &questionnaire_go_proto.Questionnaire_Item{
 				Id:       &datatypes_go_proto.String{Value: semVer4.String()},
 				Required: &datatypes_go_proto.Boolean{Value: true},
 				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-					Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
+					Value: codes_go_proto.QuestionnaireItemTypeCode_BOOLEAN,
 				},
 				Text: &datatypes_go_proto.String{
 					Value: "Best time to call",
 				},
-				AnswerOption: answers2,
+				// AnswerOption: answers2,
 				Extension: []*datatypes_go_proto.Extension{
 					&datatypes_go_proto.Extension{
 						Url: &datatypes_go_proto.Uri{
