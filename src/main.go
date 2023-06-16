@@ -144,31 +144,46 @@ func main() {
 
 			// Radio buttons
 			semVer2 := semVer1.IncMinor()
+			semVer3 := semVer2.IncMinor()
+			semVer4 := semVer3.IncMinor()
+			semVer5 := semVer4.IncMinor()
 
 			answers := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
 				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
 					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
-							StringValue: &datatypes_go_proto.String{
-								Value: "Dental Wellness Product",
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+							Coding: &datatypes_go_proto.Coding{
+								Id: &datatypes_go_proto.String{Value: semVer3.String()},
+								Code: &datatypes_go_proto.Code{
+									Value: "dental-wellness-product",
+								},
+								Display: &datatypes_go_proto.String{Value: "Dental Wellness Product"},
 							},
 						},
 					},
 				},
 				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
 					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
-							StringValue: &datatypes_go_proto.String{
-								Value: "Drug-PPO-Blue",
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+							Coding: &datatypes_go_proto.Coding{
+								Id: &datatypes_go_proto.String{Value: semVer4.String()},
+								Code: &datatypes_go_proto.Code{
+									Value: "drug-ppo-blue",
+								},
+								Display: &datatypes_go_proto.String{Value: "Drug-PPO-Blue"},
 							},
 						},
 					},
 				},
 				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
 					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
-							StringValue: &datatypes_go_proto.String{
-								Value: "Drug-PPO-Red",
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+							Coding: &datatypes_go_proto.Coding{
+								Id: &datatypes_go_proto.String{Value: semVer5.String()},
+								Code: &datatypes_go_proto.Code{
+									Value: "drug-ppo-red",
+								},
+								Display: &datatypes_go_proto.String{Value: "Drug-PPO-Red"},
 							},
 						},
 					},
@@ -390,6 +405,129 @@ func main() {
 				},
 			}
 			q.Item = append(q.Item, qi5)
+		case "opm":
+			q.Id = &datatypes_go_proto.Id{Value: "opm"}
+			// Title of page
+			q.Title = &datatypes_go_proto.String{
+				Value: "New Message",
+			}
+			semVer, _ := semver.NewVersion("1.0.0")
+			qi1 := &questionnaire_go_proto.Questionnaire_Item{
+				Id:       &datatypes_go_proto.String{Value: semVer.String()},
+				Required: &datatypes_go_proto.Boolean{Value: true},
+				Text:     &datatypes_go_proto.String{Value: "Message subject (optional)"},
+				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+					Value: codes_go_proto.QuestionnaireItemTypeCode_TEXT,
+				},
+			}
+			q.Item = append(q.Item, qi1)
+
+			// secondary text
+			semVer1 := semVer.IncMinor()
+			// subtitle
+			qi2 := &questionnaire_go_proto.Questionnaire_Item{
+				Id:       &datatypes_go_proto.String{Value: semVer1.String()},
+				Required: &datatypes_go_proto.Boolean{Value: true},
+				Text:     &datatypes_go_proto.String{Value: "To"},
+				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+					Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
+				},
+			}
+			q.Item = append(q.Item, qi2)
+
+			// Check boxes
+			semVer2 := semVer1.IncMinor()
+			semVer3 := semVer2.IncMinor()
+			semVer4 := semVer3.IncMinor()
+			semVer5 := semVer4.IncMinor()
+			semVer6 := semVer5.IncMinor()
+
+			answers := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+							Coding: &datatypes_go_proto.Coding{
+								Id: &datatypes_go_proto.String{Value: semVer3.String()},
+								Code: &datatypes_go_proto.Code{
+									Value: "Cathy C.",
+								},
+								Display: &datatypes_go_proto.String{Value: "Cathy C."},
+							},
+						},
+					},
+				},
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+							Coding: &datatypes_go_proto.Coding{
+								Id: &datatypes_go_proto.String{Value: semVer4.String()},
+								Code: &datatypes_go_proto.Code{
+									Value: "Arjun N",
+								},
+								Display: &datatypes_go_proto.String{Value: "Cathy C."},
+							},
+						},
+					},
+				},
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+							Coding: &datatypes_go_proto.Coding{
+								Id: &datatypes_go_proto.String{Value: semVer5.String()},
+								Code: &datatypes_go_proto.Code{
+									Value: "Bibin Thomas",
+								},
+								Display: &datatypes_go_proto.String{Value: "Cathy C."},
+							},
+						},
+					},
+				},
+				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+							Coding: &datatypes_go_proto.Coding{
+								Id: &datatypes_go_proto.String{Value: semVer6.String()},
+								Code: &datatypes_go_proto.Code{
+									Value: "Evan Holtrop",
+								},
+								Display: &datatypes_go_proto.String{Value: "Cathy C."},
+							},
+						},
+					},
+				},
+			}
+			qi3 := &questionnaire_go_proto.Questionnaire_Item{
+				Id:       &datatypes_go_proto.String{Value: semVer2.String()},
+				Required: &datatypes_go_proto.Boolean{Value: true},
+				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+					Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
+				},
+				AnswerOption: answers,
+				Extension: []*datatypes_go_proto.Extension{
+					&datatypes_go_proto.Extension{
+						Url: &datatypes_go_proto.Uri{
+							Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+						},
+						Value: &datatypes_go_proto.Extension_ValueX{
+							Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
+								CodeableConcept: &datatypes_go_proto.CodeableConcept{
+									Coding: []*datatypes_go_proto.Coding{
+										{
+											System: &datatypes_go_proto.Uri{
+												Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+											},
+											Code: &datatypes_go_proto.Code{
+												Value: "check-box",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			}
+			q.Item = append(q.Item, qi3)
 		case "generic":
 			// TODO
 
