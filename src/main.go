@@ -273,40 +273,46 @@ func main() {
 
 			// dropbox
 			semVer3 := semVer2.IncMinor()
+			semVer4 := semVer3.IncMinor()
+			semVer5 := semVer4.IncMinor()
+			semVer6 := semVer5.IncMinor()
 
 			answers := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
 				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
 					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
-							StringValue: &datatypes_go_proto.String{
-								Value: "8 a.m - 11 a.m EST",
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+							Coding: &datatypes_go_proto.Coding{
+								Id: &datatypes_go_proto.String{Value: semVer4.String()},
+								Code: &datatypes_go_proto.Code{
+									Value: "8-a.m.---11-a.m.-est",
+								},
+								Display: &datatypes_go_proto.String{Value: "8 a.m - 11 a.m EST"},
 							},
 						},
 					},
 				},
 				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
 					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
-							StringValue: &datatypes_go_proto.String{
-								Value: "11 a.m - 1 p.m EST",
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+							Coding: &datatypes_go_proto.Coding{
+								Id: &datatypes_go_proto.String{Value: semVer5.String()},
+								Code: &datatypes_go_proto.Code{
+									Value: "11-a.m.---2-p.m.-est",
+								},
+								Display: &datatypes_go_proto.String{Value: "11 a.m - 2 p.m EST"},
 							},
 						},
 					},
 				},
 				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
 					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
-							StringValue: &datatypes_go_proto.String{
-								Value: "1 p.m - 3 p.m EST",
-							},
-						},
-					},
-				},
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
-							StringValue: &datatypes_go_proto.String{
-								Value: "3 p.m - 5 p.m EST",
+						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+							Coding: &datatypes_go_proto.Coding{
+								Id: &datatypes_go_proto.String{Value: semVer6.String()},
+								Code: &datatypes_go_proto.Code{
+									Value: "2-p.m.---5-p.m.-est",
+								},
+								Display: &datatypes_go_proto.String{Value: "2 p.m - 5 p.m EST"},
 							},
 						},
 					},
@@ -349,7 +355,7 @@ func main() {
 			q.Item = append(q.Item, qi4)
 
 			// confirmation radio-button
-			semVer4 := semVer3.IncMinor()
+			semVer7 := semVer6.IncMinor()
 			// answers2 := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
 			// 	&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
 			// 		Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
@@ -371,7 +377,7 @@ func main() {
 			// 	},
 			// }
 			qi5 := &questionnaire_go_proto.Questionnaire_Item{
-				Id:       &datatypes_go_proto.String{Value: semVer4.String()},
+				Id:       &datatypes_go_proto.String{Value: semVer7.String()},
 				Required: &datatypes_go_proto.Boolean{Value: true},
 				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
 					Value: codes_go_proto.QuestionnaireItemTypeCode_BOOLEAN,
@@ -449,7 +455,7 @@ func main() {
 							Coding: &datatypes_go_proto.Coding{
 								Id: &datatypes_go_proto.String{Value: semVer3.String()},
 								Code: &datatypes_go_proto.Code{
-									Value: "Cathy C.",
+									Value: "cathy-c.",
 								},
 								Display: &datatypes_go_proto.String{Value: "Cathy C."},
 							},
@@ -462,9 +468,9 @@ func main() {
 							Coding: &datatypes_go_proto.Coding{
 								Id: &datatypes_go_proto.String{Value: semVer4.String()},
 								Code: &datatypes_go_proto.Code{
-									Value: "Arjun N",
+									Value: "arjun-n",
 								},
-								Display: &datatypes_go_proto.String{Value: "Cathy C."},
+								Display: &datatypes_go_proto.String{Value: "Arjun N"},
 							},
 						},
 					},
@@ -475,9 +481,9 @@ func main() {
 							Coding: &datatypes_go_proto.Coding{
 								Id: &datatypes_go_proto.String{Value: semVer5.String()},
 								Code: &datatypes_go_proto.Code{
-									Value: "Bibin Thomas",
+									Value: "bibin-thomas",
 								},
-								Display: &datatypes_go_proto.String{Value: "Cathy C."},
+								Display: &datatypes_go_proto.String{Value: "Bibin Thomas"},
 							},
 						},
 					},
@@ -488,9 +494,9 @@ func main() {
 							Coding: &datatypes_go_proto.Coding{
 								Id: &datatypes_go_proto.String{Value: semVer6.String()},
 								Code: &datatypes_go_proto.Code{
-									Value: "Evan Holtrop",
+									Value: "evan-holtrop",
 								},
-								Display: &datatypes_go_proto.String{Value: "Cathy C."},
+								Display: &datatypes_go_proto.String{Value: "Evan Holtrop"},
 							},
 						},
 					},
