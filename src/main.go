@@ -120,7 +120,7 @@ func main() {
 			semVer, _ := semver.NewVersion("1.0.0")
 			// subtitle
 			qi1 := &questionnaire_go_proto.Questionnaire_Item{
-				Id:       &datatypes_go_proto.String{Value: semVer.String()},
+				LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
 				Required: &datatypes_go_proto.Boolean{Value: true},
 				Text:     &datatypes_go_proto.String{Value: "Select your plan"},
 				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
@@ -133,7 +133,7 @@ func main() {
 			semVer1 := semVer.IncMinor()
 			// subtitle
 			qi2 := &questionnaire_go_proto.Questionnaire_Item{
-				Id:       &datatypes_go_proto.String{Value: semVer1.String()},
+				LinkId:   &datatypes_go_proto.String{Value: semVer1.String()},
 				Required: &datatypes_go_proto.Boolean{Value: true},
 				Text:     &datatypes_go_proto.String{Value: "To help ensure we connect you with the right agent, let us know the plan this is related to"},
 				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
@@ -190,7 +190,7 @@ func main() {
 				},
 			}
 			qi3 := &questionnaire_go_proto.Questionnaire_Item{
-				Id:       &datatypes_go_proto.String{Value: semVer2.String()},
+				LinkId:   &datatypes_go_proto.String{Value: semVer2.String()},
 				Required: &datatypes_go_proto.Boolean{Value: true},
 				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
 					Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
@@ -230,7 +230,7 @@ func main() {
 			semVer, _ := semver.NewVersion("1.0.0")
 			// subtitle
 			qi1 := &questionnaire_go_proto.Questionnaire_Item{
-				Id:       &datatypes_go_proto.String{Value: semVer.String()},
+				LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
 				Required: &datatypes_go_proto.Boolean{Value: true},
 				Text:     &datatypes_go_proto.String{Value: "Callback Preference"},
 				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
@@ -243,7 +243,7 @@ func main() {
 			semVer1 := semVer.IncMinor()
 			// subtitle
 			qi2 := &questionnaire_go_proto.Questionnaire_Item{
-				Id:       &datatypes_go_proto.String{Value: semVer1.String()},
+				LinkId:   &datatypes_go_proto.String{Value: semVer1.String()},
 				Required: &datatypes_go_proto.Boolean{Value: true},
 				Text:     &datatypes_go_proto.String{Value: "We may need to call you about personal health information. If we cannot reach you via our message centre, let us know the best time to reach you"},
 				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
@@ -255,7 +255,7 @@ func main() {
 			// phone number
 			semVer2 := semVer1.IncMinor()
 			qi3 := &questionnaire_go_proto.Questionnaire_Item{
-				Id:       &datatypes_go_proto.String{Value: semVer2.String()},
+				LinkId:   &datatypes_go_proto.String{Value: semVer2.String()},
 				Required: &datatypes_go_proto.Boolean{Value: true},
 				Text:     &datatypes_go_proto.String{Value: "Phone"},
 				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
@@ -319,7 +319,7 @@ func main() {
 				},
 			}
 			qi4 := &questionnaire_go_proto.Questionnaire_Item{
-				Id:       &datatypes_go_proto.String{Value: semVer3.String()},
+				LinkId:   &datatypes_go_proto.String{Value: semVer3.String()},
 				Required: &datatypes_go_proto.Boolean{Value: true},
 				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
 					Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
@@ -419,11 +419,11 @@ func main() {
 			}
 			semVer, _ := semver.NewVersion("1.0.0")
 			qi1 := &questionnaire_go_proto.Questionnaire_Item{
-				Id:       &datatypes_go_proto.String{Value: semVer.String()},
-				Required: &datatypes_go_proto.Boolean{Value: true},
-				Text:     &datatypes_go_proto.String{Value: "Message subject (optional)"},
+				LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
+				Required: &datatypes_go_proto.Boolean{Value: false},
+				Text:     &datatypes_go_proto.String{Value: "Message subject"},
 				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-					Value: codes_go_proto.QuestionnaireItemTypeCode_TEXT,
+					Value: codes_go_proto.QuestionnaireItemTypeCode_STRING,
 				},
 			}
 			q.Item = append(q.Item, qi1)
@@ -432,7 +432,7 @@ func main() {
 			semVer1 := semVer.IncMinor()
 			// subtitle
 			qi2 := &questionnaire_go_proto.Questionnaire_Item{
-				Id:       &datatypes_go_proto.String{Value: semVer1.String()},
+				LinkId:   &datatypes_go_proto.String{Value: semVer1.String()},
 				Required: &datatypes_go_proto.Boolean{Value: true},
 				Text:     &datatypes_go_proto.String{Value: "To"},
 				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
