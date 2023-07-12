@@ -544,14 +544,17 @@ func main() {
 			// TODO
 
 		}
-		//formatter
-		pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
+		//formatter - the efficient one
+		// pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
+		marshaller, err := jsonformat.NewMarshaller(false, "", "", fhirversion.R4)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(err.Error()))
 			return
 		}
-		resp, err := pMarshaller.MarshalResourceToString(q)
+		rsc := r4pb.ContainedResource{OneofResource: &r4pb.ContainedResource_Questionnaire{Questionnaire: q}}
+		// resp, err := pMarshaller.MarshalResourceToString(q)
+		resp, err := marshaller.Marshal(&rsc)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(err.Error()))
