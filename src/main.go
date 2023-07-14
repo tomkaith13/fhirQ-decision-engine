@@ -24,6 +24,589 @@ import (
 	"github.com/tomkaith13/fhirQuestionnaireEngine/src/questionnaire_resp_model"
 )
 
+func questionnaireHandler(w http.ResponseWriter, r *http.Request) {
+	questionnaireJson, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	unmarshaller, err := jsonformat.NewUnmarshaller(time.UTC.String(), fhirversion.R4)
+
+	unmarshalled, err := unmarshaller.Unmarshal(questionnaireJson)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Cant unmarshall FHIR Questionnaire"))
+		return
+	}
+	containedResource := unmarshalled.(*r4pb.ContainedResource)
+
+	q := containedResource.GetQuestionnaire()
+	if _, ok := questionnaire_collection.QMap[q.Id.Value]; ok {
+		w.WriteHeader(http.StatusConflict)
+		w.Write([]byte("id already exists"))
+		return
+	}
+	custom := "my own metadata"
+	q.Item = append(q.Item, &questionnaire_go_proto.Questionnaire_Item{
+		Id: &datatypes_go_proto.String{
+			Value: custom,
+		},
+	})
+	id := q.GetId().Value
+	if _, ok := questionnaire_collection.QMap[id]; !ok {
+		questionnaire_collection.QMap[id] = q
+	}
+	pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	resp, err := pMarshaller.MarshalResourceToString(q)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	questionnaire_collection.QMap[q.Id.Value] = q
+	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte(resp))
+}
+
+func getQuestionnaireByIdHandler(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+
+	questionnaire, ok := questionnaire_collection.QMap[id]
+	if !ok {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("questionnaire does not exist"))
+		return
+	}
+	pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	resp, err := pMarshaller.MarshalResourceToString(questionnaire)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(resp))
+}
+
+func mockedQuestionnaireHandler(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	q := &questionnaire_go_proto.Questionnaire{}
+	switch id {
+	case "hm1":
+		q.Id = &datatypes_go_proto.Id{Value: "hm1"}
+		// Title of page
+		q.Title = &datatypes_go_proto.String{
+			Value: "Select your plan",
+		}
+		semVer, _ := semver.NewVersion("1.0.0")
+		// subtitle
+		// qi1 := &questionnaire_go_proto.Questionnaire_Item{
+		// 	LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
+		// 	Required: &datatypes_go_proto.Boolean{Value: true},
+		// 	Text:     &datatypes_go_proto.String{Value: "Select your plan"},
+		// 	Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+		// 		Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
+		// 	},
+		// }
+		// q.Item = append(q.Item, qi1)
+
+		// secondary text
+		// subtitle
+		qi1 := &questionnaire_go_proto.Questionnaire_Item{
+			LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
+			Required: &datatypes_go_proto.Boolean{Value: true},
+			Text:     &datatypes_go_proto.String{Value: "To help ensure we connect you with the right agent, let us know the plan this is related to"},
+			Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+				Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
+			},
+		}
+		q.Item = append(q.Item, qi1)
+
+		// Radio buttons
+		semVer1 := semVer.IncMinor()
+		semVer2 := semVer1.IncMinor()
+		semVer3 := semVer2.IncMinor()
+		semVer4 := semVer3.IncMinor()
+
+		answers := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+			&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+					Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+						Coding: &datatypes_go_proto.Coding{
+							Id: &datatypes_go_proto.String{Value: semVer2.String()},
+							Code: &datatypes_go_proto.Code{
+								Value: "dental-wellness-product",
+							},
+							Display: &datatypes_go_proto.String{Value: "Dental Wellness Product"},
+						},
+					},
+				},
+			},
+			&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+					Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+						Coding: &datatypes_go_proto.Coding{
+							Id: &datatypes_go_proto.String{Value: semVer3.String()},
+							Code: &datatypes_go_proto.Code{
+								Value: "drug-ppo-blue",
+							},
+							Display: &datatypes_go_proto.String{Value: "Drug-PPO-Blue"},
+						},
+					},
+				},
+			},
+			&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+					Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+						Coding: &datatypes_go_proto.Coding{
+							Id: &datatypes_go_proto.String{Value: semVer4.String()},
+							Code: &datatypes_go_proto.Code{
+								Value: "drug-ppo-red",
+							},
+							Display: &datatypes_go_proto.String{Value: "Drug-PPO-Red"},
+						},
+					},
+				},
+			},
+		}
+		qi3 := &questionnaire_go_proto.Questionnaire_Item{
+			LinkId:   &datatypes_go_proto.String{Value: semVer1.String()},
+			Required: &datatypes_go_proto.Boolean{Value: true},
+			Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+				Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
+			},
+			Text: &datatypes_go_proto.String{
+				Value: "Plans",
+			},
+			AnswerOption: answers,
+			Extension: []*datatypes_go_proto.Extension{
+				&datatypes_go_proto.Extension{
+					Url: &datatypes_go_proto.Uri{
+						Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+					},
+					Value: &datatypes_go_proto.Extension_ValueX{
+						Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
+							CodeableConcept: &datatypes_go_proto.CodeableConcept{
+								Coding: []*datatypes_go_proto.Coding{
+									{
+										System: &datatypes_go_proto.Uri{
+											Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+										},
+										Code: &datatypes_go_proto.Code{
+											Value: "radio-button",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+		q.Item = append(q.Item, qi3)
+	case "hm2":
+		q.Id = &datatypes_go_proto.Id{Value: "hm2"}
+		// Title of page
+		q.Title = &datatypes_go_proto.String{
+			Value: "Callback Preference",
+		}
+		semVer, _ := semver.NewVersion("1.0.0")
+		// subtitle
+		// qi1 := &questionnaire_go_proto.Questionnaire_Item{
+		// 	LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
+		// 	Required: &datatypes_go_proto.Boolean{Value: true},
+		// 	Text:     &datatypes_go_proto.String{Value: "Callback Preference"},
+		// 	Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+		// 		Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
+		// 	},
+		// }
+		// q.Item = append(q.Item, qi1)
+
+		// secondary text
+		// subtitle
+		qi1 := &questionnaire_go_proto.Questionnaire_Item{
+			LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
+			Required: &datatypes_go_proto.Boolean{Value: true},
+			Text:     &datatypes_go_proto.String{Value: "We may need to call you about personal health information. If we cannot reach you via our message centre, let us know the best time to reach you"},
+			Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+				Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
+			},
+		}
+		q.Item = append(q.Item, qi1)
+
+		// phone number
+		semVer1 := semVer.IncMinor()
+		qi3 := &questionnaire_go_proto.Questionnaire_Item{
+			LinkId:   &datatypes_go_proto.String{Value: semVer1.String()},
+			Required: &datatypes_go_proto.Boolean{Value: true},
+			Text:     &datatypes_go_proto.String{Value: "Phone"},
+			Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+				Value: codes_go_proto.QuestionnaireItemTypeCode_STRING,
+			},
+			Initial: []*questionnaire_go_proto.Questionnaire_Item_Initial{&questionnaire_go_proto.Questionnaire_Item_Initial{
+				Value: &questionnaire_go_proto.Questionnaire_Item_Initial_ValueX{
+					Choice: &questionnaire_go_proto.Questionnaire_Item_Initial_ValueX_StringValue{
+						StringValue: &datatypes_go_proto.String{Value: "123-456-7890"},
+					}},
+			},
+			},
+		}
+		q.Item = append(q.Item, qi3)
+
+		// dropbox
+		semVer2 := semVer1.IncMinor()
+		semVer3 := semVer2.IncMinor()
+		semVer4 := semVer3.IncMinor()
+		semVer5 := semVer4.IncMinor()
+
+		answers := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+			&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+					Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+						Coding: &datatypes_go_proto.Coding{
+							Id: &datatypes_go_proto.String{Value: semVer3.String()},
+							Code: &datatypes_go_proto.Code{
+								Value: "8-a.m.---11-a.m.-est",
+							},
+							Display: &datatypes_go_proto.String{Value: "8 a.m - 11 a.m EST"},
+						},
+					},
+				},
+			},
+			&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+					Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+						Coding: &datatypes_go_proto.Coding{
+							Id: &datatypes_go_proto.String{Value: semVer4.String()},
+							Code: &datatypes_go_proto.Code{
+								Value: "11-a.m.---2-p.m.-est",
+							},
+							Display: &datatypes_go_proto.String{Value: "11 a.m - 2 p.m EST"},
+						},
+					},
+				},
+			},
+			&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+					Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+						Coding: &datatypes_go_proto.Coding{
+							Id: &datatypes_go_proto.String{Value: semVer5.String()},
+							Code: &datatypes_go_proto.Code{
+								Value: "2-p.m.---5-p.m.-est",
+							},
+							Display: &datatypes_go_proto.String{Value: "2 p.m - 5 p.m EST"},
+						},
+					},
+				},
+			},
+		}
+		qi4 := &questionnaire_go_proto.Questionnaire_Item{
+			LinkId:   &datatypes_go_proto.String{Value: semVer2.String()},
+			Required: &datatypes_go_proto.Boolean{Value: true},
+			Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+				Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
+			},
+			Text: &datatypes_go_proto.String{
+				Value: "Best time to call",
+			},
+			AnswerOption: answers,
+			Extension: []*datatypes_go_proto.Extension{
+				&datatypes_go_proto.Extension{
+					Url: &datatypes_go_proto.Uri{
+						Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+					},
+					Value: &datatypes_go_proto.Extension_ValueX{
+						Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
+							CodeableConcept: &datatypes_go_proto.CodeableConcept{
+								Coding: []*datatypes_go_proto.Coding{
+									{
+										System: &datatypes_go_proto.Uri{
+											Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+										},
+										Code: &datatypes_go_proto.Code{
+											Value: "drop-down",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+		q.Item = append(q.Item, qi4)
+
+		// confirmation radio-button
+		semVer6 := semVer5.IncMinor()
+		// answers2 := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+		// 	&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+		// 		Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+		// 			Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+		// 				StringValue: &datatypes_go_proto.String{
+		// 					Value: "Yes",
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// 	&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+		// 		Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+		// 			Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
+		// 				StringValue: &datatypes_go_proto.String{
+		// 					Value: "No",
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+		qi5 := &questionnaire_go_proto.Questionnaire_Item{
+			LinkId:   &datatypes_go_proto.String{Value: semVer6.String()},
+			Required: &datatypes_go_proto.Boolean{Value: true},
+			Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+				Value: codes_go_proto.QuestionnaireItemTypeCode_BOOLEAN,
+			},
+			Text: &datatypes_go_proto.String{
+				Value: "May we leave a message if you’re not available",
+			},
+			// AnswerOption: answers2,
+			Extension: []*datatypes_go_proto.Extension{
+				&datatypes_go_proto.Extension{
+					Url: &datatypes_go_proto.Uri{
+						Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+					},
+					Value: &datatypes_go_proto.Extension_ValueX{
+						Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
+							CodeableConcept: &datatypes_go_proto.CodeableConcept{
+								Coding: []*datatypes_go_proto.Coding{
+									{
+										System: &datatypes_go_proto.Uri{
+											Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+										},
+										Code: &datatypes_go_proto.Code{
+											Value: "radio-button",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+		q.Item = append(q.Item, qi5)
+	case "opm":
+		q.Id = &datatypes_go_proto.Id{Value: "opm"}
+		// Title of page
+		q.Title = &datatypes_go_proto.String{
+			Value: "Select Participants",
+		}
+
+		// secondary text
+		// Subtitle
+		semVer, _ := semver.NewVersion("1.0.0")
+		qi1 := &questionnaire_go_proto.Questionnaire_Item{
+			LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
+			Required: &datatypes_go_proto.Boolean{Value: true},
+			Text:     &datatypes_go_proto.String{Value: "Select people on your plan that you’d like to include in this message."},
+			Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+				Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
+			},
+		}
+		q.Item = append(q.Item, qi1)
+
+		//EditText
+		semVer1 := semVer.IncMinor()
+		qi2 := &questionnaire_go_proto.Questionnaire_Item{
+			LinkId:   &datatypes_go_proto.String{Value: semVer1.String()},
+			Required: &datatypes_go_proto.Boolean{Value: false},
+			Text:     &datatypes_go_proto.String{Value: "Message subject"},
+			Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+				Value: codes_go_proto.QuestionnaireItemTypeCode_STRING,
+			},
+		}
+		q.Item = append(q.Item, qi2)
+
+		// Check boxes
+		semVer2 := semVer1.IncMinor()
+		semVer3 := semVer2.IncMinor()
+		semVer4 := semVer3.IncMinor()
+		semVer5 := semVer4.IncMinor()
+		semVer6 := semVer5.IncMinor()
+
+		answers := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+			&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+					Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+						Coding: &datatypes_go_proto.Coding{
+							Id: &datatypes_go_proto.String{Value: semVer3.String()},
+							Code: &datatypes_go_proto.Code{
+								Value: "cathy-c.",
+							},
+							Display: &datatypes_go_proto.String{Value: "Cathy C."},
+						},
+					},
+				},
+			},
+			&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+					Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+						Coding: &datatypes_go_proto.Coding{
+							Id: &datatypes_go_proto.String{Value: semVer4.String()},
+							Code: &datatypes_go_proto.Code{
+								Value: "arjun-n",
+							},
+							Display: &datatypes_go_proto.String{Value: "Arjun N"},
+						},
+					},
+				},
+			},
+			&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+					Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+						Coding: &datatypes_go_proto.Coding{
+							Id: &datatypes_go_proto.String{Value: semVer5.String()},
+							Code: &datatypes_go_proto.Code{
+								Value: "bibin-thomas",
+							},
+							Display: &datatypes_go_proto.String{Value: "Bibin Thomas"},
+						},
+					},
+				},
+			},
+			&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
+				Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
+					Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
+						Coding: &datatypes_go_proto.Coding{
+							Id: &datatypes_go_proto.String{Value: semVer6.String()},
+							Code: &datatypes_go_proto.Code{
+								Value: "evan-holtrop",
+							},
+							Display: &datatypes_go_proto.String{Value: "Evan Holtrop"},
+						},
+					},
+				},
+			},
+		}
+		qi3 := &questionnaire_go_proto.Questionnaire_Item{
+			LinkId:   &datatypes_go_proto.String{Value: semVer2.String()},
+			Required: &datatypes_go_proto.Boolean{Value: true},
+			Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
+				Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
+			},
+			Text: &datatypes_go_proto.String{
+				Value: "Participants",
+			},
+			AnswerOption: answers,
+			Extension: []*datatypes_go_proto.Extension{
+				&datatypes_go_proto.Extension{
+					Url: &datatypes_go_proto.Uri{
+						Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+					},
+					Value: &datatypes_go_proto.Extension_ValueX{
+						Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
+							CodeableConcept: &datatypes_go_proto.CodeableConcept{
+								Coding: []*datatypes_go_proto.Coding{
+									{
+										System: &datatypes_go_proto.Uri{
+											Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+										},
+										Code: &datatypes_go_proto.Code{
+											Value: "check-box",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+		q.Item = append(q.Item, qi3)
+	case "generic":
+		// TODO
+
+	}
+	//formatter - the efficient one
+	// pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
+	marshaller, err := jsonformat.NewMarshaller(false, "", "", fhirversion.R4)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	rsc := r4pb.ContainedResource{OneofResource: &r4pb.ContainedResource_Questionnaire{Questionnaire: q}}
+	// resp, err := pMarshaller.MarshalResourceToString(q)
+	resp, err := marshaller.Marshal(&rsc)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(resp))
+}
+
+func questionnaireResponseHandler(w http.ResponseWriter, r *http.Request) {
+	dec := json.NewDecoder(r.Body)
+	qrBody := questionnaire_resp_model.QRBody{}
+
+	err := dec.Decode(&qrBody)
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Cant unmarshall custom json"))
+		return
+
+	}
+	fmt.Println("ids::::::::", qrBody.QuestionnaireIds)
+
+	regJsonMarshalledData, err := json.Marshal(qrBody.QuestionnaireResponse)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Cant unmarshall custom json"))
+		return
+	}
+	unmarshaller, err := jsonformat.NewUnmarshaller(time.UTC.String(), fhirversion.R4)
+
+	unmarshalled, err := unmarshaller.Unmarshal(regJsonMarshalledData)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Cant unmarshall FHIR Questionnaire"))
+		return
+	}
+
+	cr := unmarshalled.(*r4pb.ContainedResource)
+	qr := cr.GetQuestionnaireResponse()
+
+	// Insert decision logic for a Questionnaire here!!!
+	for _, item := range qr.Item {
+		for _, ans := range item.Answer {
+			fmt.Println(ans.Value.GetCoding().Code.Value)
+			answerVal := ans.Value.GetCoding().Code.Value
+			if answerVal == "urgent-care" {
+				w.WriteHeader(http.StatusAccepted)
+				w.Write([]byte("Next questionnaire id: urgent-menu"))
+				return
+			}
+		}
+	}
+
+	fmt.Println(qr.GetId())
+	w.WriteHeader(http.StatusInternalServerError)
+	w.Write([]byte("{\" Unable to process resp id\": \"" + qr.GetId().Value + "\"}"))
+}
+
 func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
@@ -32,538 +615,11 @@ func main() {
 
 	// questionnaire_collection.QMap := make(map[string]*questionnaire_go_proto.Questionnaire)
 
-	r.Post("/questionnaire", func(w http.ResponseWriter, r *http.Request) {
-		questionnaireJson, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		unmarshaller, err := jsonformat.NewUnmarshaller(time.UTC.String(), fhirversion.R4)
+	r.Post("/questionnaire", questionnaireHandler)
 
-		unmarshalled, err := unmarshaller.Unmarshal(questionnaireJson)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("Cant unmarshall FHIR Questionnaire"))
-			return
-		}
-		containedResource := unmarshalled.(*r4pb.ContainedResource)
+	r.Get("/questionnaire/{id}", getQuestionnaireByIdHandler)
 
-		q := containedResource.GetQuestionnaire()
-		if _, ok := questionnaire_collection.QMap[q.Id.Value]; ok {
-			w.WriteHeader(http.StatusConflict)
-			w.Write([]byte("id already exists"))
-			return
-		}
-		custom := "my own metadata"
-		q.Item = append(q.Item, &questionnaire_go_proto.Questionnaire_Item{
-			Id: &datatypes_go_proto.String{
-				Value: custom,
-			},
-		})
-		id := q.GetId().Value
-		if _, ok := questionnaire_collection.QMap[id]; !ok {
-			questionnaire_collection.QMap[id] = q
-		}
-		pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte(err.Error()))
-			return
-		}
-
-		resp, err := pMarshaller.MarshalResourceToString(q)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte(err.Error()))
-			return
-		}
-		questionnaire_collection.QMap[q.Id.Value] = q
-		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(resp))
-	})
-
-	r.Get("/questionnaire/{id}", func(w http.ResponseWriter, r *http.Request) {
-		id := chi.URLParam(r, "id")
-
-		questionnaire, ok := questionnaire_collection.QMap[id]
-		if !ok {
-			w.WriteHeader(http.StatusNotFound)
-			w.Write([]byte("questionnaire does not exist"))
-			return
-		}
-		pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte(err.Error()))
-			return
-		}
-		resp, err := pMarshaller.MarshalResourceToString(questionnaire)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte(err.Error()))
-			return
-		}
-
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(resp))
-	})
-
-	r.Get("/mocked-questionnaire/{id}", func(w http.ResponseWriter, r *http.Request) {
-		id := chi.URLParam(r, "id")
-		q := &questionnaire_go_proto.Questionnaire{}
-		switch id {
-		case "hm1":
-			q.Id = &datatypes_go_proto.Id{Value: "hm1"}
-			// Title of page
-			q.Title = &datatypes_go_proto.String{
-				Value: "Select your plan",
-			}
-			semVer, _ := semver.NewVersion("1.0.0")
-			// subtitle
-			// qi1 := &questionnaire_go_proto.Questionnaire_Item{
-			// 	LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
-			// 	Required: &datatypes_go_proto.Boolean{Value: true},
-			// 	Text:     &datatypes_go_proto.String{Value: "Select your plan"},
-			// 	Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-			// 		Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
-			// 	},
-			// }
-			// q.Item = append(q.Item, qi1)
-
-			// secondary text
-			// subtitle
-			qi1 := &questionnaire_go_proto.Questionnaire_Item{
-				LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
-				Required: &datatypes_go_proto.Boolean{Value: true},
-				Text:     &datatypes_go_proto.String{Value: "To help ensure we connect you with the right agent, let us know the plan this is related to"},
-				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-					Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
-				},
-			}
-			q.Item = append(q.Item, qi1)
-
-			// Radio buttons
-			semVer1 := semVer.IncMinor()
-			semVer2 := semVer1.IncMinor()
-			semVer3 := semVer2.IncMinor()
-			semVer4 := semVer3.IncMinor()
-
-			answers := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
-							Coding: &datatypes_go_proto.Coding{
-								Id: &datatypes_go_proto.String{Value: semVer2.String()},
-								Code: &datatypes_go_proto.Code{
-									Value: "dental-wellness-product",
-								},
-								Display: &datatypes_go_proto.String{Value: "Dental Wellness Product"},
-							},
-						},
-					},
-				},
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
-							Coding: &datatypes_go_proto.Coding{
-								Id: &datatypes_go_proto.String{Value: semVer3.String()},
-								Code: &datatypes_go_proto.Code{
-									Value: "drug-ppo-blue",
-								},
-								Display: &datatypes_go_proto.String{Value: "Drug-PPO-Blue"},
-							},
-						},
-					},
-				},
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
-							Coding: &datatypes_go_proto.Coding{
-								Id: &datatypes_go_proto.String{Value: semVer4.String()},
-								Code: &datatypes_go_proto.Code{
-									Value: "drug-ppo-red",
-								},
-								Display: &datatypes_go_proto.String{Value: "Drug-PPO-Red"},
-							},
-						},
-					},
-				},
-			}
-			qi3 := &questionnaire_go_proto.Questionnaire_Item{
-				LinkId:   &datatypes_go_proto.String{Value: semVer1.String()},
-				Required: &datatypes_go_proto.Boolean{Value: true},
-				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-					Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
-				},
-				Text: &datatypes_go_proto.String{
-					Value: "Plans",
-				},
-				AnswerOption: answers,
-				Extension: []*datatypes_go_proto.Extension{
-					&datatypes_go_proto.Extension{
-						Url: &datatypes_go_proto.Uri{
-							Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-						},
-						Value: &datatypes_go_proto.Extension_ValueX{
-							Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
-								CodeableConcept: &datatypes_go_proto.CodeableConcept{
-									Coding: []*datatypes_go_proto.Coding{
-										{
-											System: &datatypes_go_proto.Uri{
-												Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
-											},
-											Code: &datatypes_go_proto.Code{
-												Value: "radio-button",
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			}
-			q.Item = append(q.Item, qi3)
-		case "hm2":
-			q.Id = &datatypes_go_proto.Id{Value: "hm2"}
-			// Title of page
-			q.Title = &datatypes_go_proto.String{
-				Value: "Callback Preference",
-			}
-			semVer, _ := semver.NewVersion("1.0.0")
-			// subtitle
-			// qi1 := &questionnaire_go_proto.Questionnaire_Item{
-			// 	LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
-			// 	Required: &datatypes_go_proto.Boolean{Value: true},
-			// 	Text:     &datatypes_go_proto.String{Value: "Callback Preference"},
-			// 	Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-			// 		Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
-			// 	},
-			// }
-			// q.Item = append(q.Item, qi1)
-
-			// secondary text
-			// subtitle
-			qi1 := &questionnaire_go_proto.Questionnaire_Item{
-				LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
-				Required: &datatypes_go_proto.Boolean{Value: true},
-				Text:     &datatypes_go_proto.String{Value: "We may need to call you about personal health information. If we cannot reach you via our message centre, let us know the best time to reach you"},
-				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-					Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
-				},
-			}
-			q.Item = append(q.Item, qi1)
-
-			// phone number
-			semVer1 := semVer.IncMinor()
-			qi3 := &questionnaire_go_proto.Questionnaire_Item{
-				LinkId:   &datatypes_go_proto.String{Value: semVer1.String()},
-				Required: &datatypes_go_proto.Boolean{Value: true},
-				Text:     &datatypes_go_proto.String{Value: "Phone"},
-				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-					Value: codes_go_proto.QuestionnaireItemTypeCode_STRING,
-				},
-				Initial: []*questionnaire_go_proto.Questionnaire_Item_Initial{&questionnaire_go_proto.Questionnaire_Item_Initial{
-					Value: &questionnaire_go_proto.Questionnaire_Item_Initial_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_Initial_ValueX_StringValue{
-							StringValue: &datatypes_go_proto.String{Value: "123-456-7890"},
-						}},
-				},
-				},
-			}
-			q.Item = append(q.Item, qi3)
-
-			// dropbox
-			semVer2 := semVer1.IncMinor()
-			semVer3 := semVer2.IncMinor()
-			semVer4 := semVer3.IncMinor()
-			semVer5 := semVer4.IncMinor()
-
-			answers := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
-							Coding: &datatypes_go_proto.Coding{
-								Id: &datatypes_go_proto.String{Value: semVer3.String()},
-								Code: &datatypes_go_proto.Code{
-									Value: "8-a.m.---11-a.m.-est",
-								},
-								Display: &datatypes_go_proto.String{Value: "8 a.m - 11 a.m EST"},
-							},
-						},
-					},
-				},
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
-							Coding: &datatypes_go_proto.Coding{
-								Id: &datatypes_go_proto.String{Value: semVer4.String()},
-								Code: &datatypes_go_proto.Code{
-									Value: "11-a.m.---2-p.m.-est",
-								},
-								Display: &datatypes_go_proto.String{Value: "11 a.m - 2 p.m EST"},
-							},
-						},
-					},
-				},
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
-							Coding: &datatypes_go_proto.Coding{
-								Id: &datatypes_go_proto.String{Value: semVer5.String()},
-								Code: &datatypes_go_proto.Code{
-									Value: "2-p.m.---5-p.m.-est",
-								},
-								Display: &datatypes_go_proto.String{Value: "2 p.m - 5 p.m EST"},
-							},
-						},
-					},
-				},
-			}
-			qi4 := &questionnaire_go_proto.Questionnaire_Item{
-				LinkId:   &datatypes_go_proto.String{Value: semVer2.String()},
-				Required: &datatypes_go_proto.Boolean{Value: true},
-				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-					Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
-				},
-				Text: &datatypes_go_proto.String{
-					Value: "Best time to call",
-				},
-				AnswerOption: answers,
-				Extension: []*datatypes_go_proto.Extension{
-					&datatypes_go_proto.Extension{
-						Url: &datatypes_go_proto.Uri{
-							Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-						},
-						Value: &datatypes_go_proto.Extension_ValueX{
-							Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
-								CodeableConcept: &datatypes_go_proto.CodeableConcept{
-									Coding: []*datatypes_go_proto.Coding{
-										{
-											System: &datatypes_go_proto.Uri{
-												Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
-											},
-											Code: &datatypes_go_proto.Code{
-												Value: "drop-down",
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			}
-			q.Item = append(q.Item, qi4)
-
-			// confirmation radio-button
-			semVer6 := semVer5.IncMinor()
-			// answers2 := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-			// 	&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-			// 		Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-			// 			Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
-			// 				StringValue: &datatypes_go_proto.String{
-			// 					Value: "Yes",
-			// 				},
-			// 			},
-			// 		},
-			// 	},
-			// 	&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-			// 		Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-			// 			Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_StringValue{
-			// 				StringValue: &datatypes_go_proto.String{
-			// 					Value: "No",
-			// 				},
-			// 			},
-			// 		},
-			// 	},
-			// }
-			qi5 := &questionnaire_go_proto.Questionnaire_Item{
-				LinkId:   &datatypes_go_proto.String{Value: semVer6.String()},
-				Required: &datatypes_go_proto.Boolean{Value: true},
-				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-					Value: codes_go_proto.QuestionnaireItemTypeCode_BOOLEAN,
-				},
-				Text: &datatypes_go_proto.String{
-					Value: "May we leave a message if you’re not available",
-				},
-				// AnswerOption: answers2,
-				Extension: []*datatypes_go_proto.Extension{
-					&datatypes_go_proto.Extension{
-						Url: &datatypes_go_proto.Uri{
-							Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-						},
-						Value: &datatypes_go_proto.Extension_ValueX{
-							Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
-								CodeableConcept: &datatypes_go_proto.CodeableConcept{
-									Coding: []*datatypes_go_proto.Coding{
-										{
-											System: &datatypes_go_proto.Uri{
-												Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
-											},
-											Code: &datatypes_go_proto.Code{
-												Value: "radio-button",
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			}
-			q.Item = append(q.Item, qi5)
-		case "opm":
-			q.Id = &datatypes_go_proto.Id{Value: "opm"}
-			// Title of page
-			q.Title = &datatypes_go_proto.String{
-				Value: "Select Participants",
-			}
-
-			// secondary text
-			// Subtitle
-			semVer, _ := semver.NewVersion("1.0.0")
-			qi1 := &questionnaire_go_proto.Questionnaire_Item{
-				LinkId:   &datatypes_go_proto.String{Value: semVer.String()},
-				Required: &datatypes_go_proto.Boolean{Value: true},
-				Text:     &datatypes_go_proto.String{Value: "Select people on your plan that you’d like to include in this message."},
-				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-					Value: codes_go_proto.QuestionnaireItemTypeCode_DISPLAY,
-				},
-			}
-			q.Item = append(q.Item, qi1)
-
-			//EditText
-			semVer1 := semVer.IncMinor()
-			qi2 := &questionnaire_go_proto.Questionnaire_Item{
-				LinkId:   &datatypes_go_proto.String{Value: semVer1.String()},
-				Required: &datatypes_go_proto.Boolean{Value: false},
-				Text:     &datatypes_go_proto.String{Value: "Message subject"},
-				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-					Value: codes_go_proto.QuestionnaireItemTypeCode_STRING,
-				},
-			}
-			q.Item = append(q.Item, qi2)
-
-			// Check boxes
-			semVer2 := semVer1.IncMinor()
-			semVer3 := semVer2.IncMinor()
-			semVer4 := semVer3.IncMinor()
-			semVer5 := semVer4.IncMinor()
-			semVer6 := semVer5.IncMinor()
-
-			answers := []*questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
-							Coding: &datatypes_go_proto.Coding{
-								Id: &datatypes_go_proto.String{Value: semVer3.String()},
-								Code: &datatypes_go_proto.Code{
-									Value: "cathy-c.",
-								},
-								Display: &datatypes_go_proto.String{Value: "Cathy C."},
-							},
-						},
-					},
-				},
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
-							Coding: &datatypes_go_proto.Coding{
-								Id: &datatypes_go_proto.String{Value: semVer4.String()},
-								Code: &datatypes_go_proto.Code{
-									Value: "arjun-n",
-								},
-								Display: &datatypes_go_proto.String{Value: "Arjun N"},
-							},
-						},
-					},
-				},
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
-							Coding: &datatypes_go_proto.Coding{
-								Id: &datatypes_go_proto.String{Value: semVer5.String()},
-								Code: &datatypes_go_proto.Code{
-									Value: "bibin-thomas",
-								},
-								Display: &datatypes_go_proto.String{Value: "Bibin Thomas"},
-							},
-						},
-					},
-				},
-				&questionnaire_go_proto.Questionnaire_Item_AnswerOption{
-					Value: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX{
-						Choice: &questionnaire_go_proto.Questionnaire_Item_AnswerOption_ValueX_Coding{
-							Coding: &datatypes_go_proto.Coding{
-								Id: &datatypes_go_proto.String{Value: semVer6.String()},
-								Code: &datatypes_go_proto.Code{
-									Value: "evan-holtrop",
-								},
-								Display: &datatypes_go_proto.String{Value: "Evan Holtrop"},
-							},
-						},
-					},
-				},
-			}
-			qi3 := &questionnaire_go_proto.Questionnaire_Item{
-				LinkId:   &datatypes_go_proto.String{Value: semVer2.String()},
-				Required: &datatypes_go_proto.Boolean{Value: true},
-				Type: &questionnaire_go_proto.Questionnaire_Item_TypeCode{
-					Value: codes_go_proto.QuestionnaireItemTypeCode_CHOICE,
-				},
-				Text: &datatypes_go_proto.String{
-					Value: "Participants",
-				},
-				AnswerOption: answers,
-				Extension: []*datatypes_go_proto.Extension{
-					&datatypes_go_proto.Extension{
-						Url: &datatypes_go_proto.Uri{
-							Value: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-						},
-						Value: &datatypes_go_proto.Extension_ValueX{
-							Choice: &datatypes_go_proto.Extension_ValueX_CodeableConcept{
-								CodeableConcept: &datatypes_go_proto.CodeableConcept{
-									Coding: []*datatypes_go_proto.Coding{
-										{
-											System: &datatypes_go_proto.Uri{
-												Value: "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
-											},
-											Code: &datatypes_go_proto.Code{
-												Value: "check-box",
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			}
-			q.Item = append(q.Item, qi3)
-		case "generic":
-			// TODO
-
-		}
-		//formatter - the efficient one
-		// pMarshaller, err := jsonformat.NewPrettyMarshaller(fhirversion.R4)
-		marshaller, err := jsonformat.NewMarshaller(false, "", "", fhirversion.R4)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte(err.Error()))
-			return
-		}
-		rsc := r4pb.ContainedResource{OneofResource: &r4pb.ContainedResource_Questionnaire{Questionnaire: q}}
-		// resp, err := pMarshaller.MarshalResourceToString(q)
-		resp, err := marshaller.Marshal(&rsc)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte(err.Error()))
-			return
-		}
-
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(resp))
-	})
+	r.Get("/mocked-questionnaire/{id}", mockedQuestionnaireHandler)
 
 	r.Get("/transform-from-json-1", func(w http.ResponseWriter, r *http.Request) {
 		tenantJson := `{
@@ -843,55 +899,7 @@ func main() {
 		w.Write([]byte(resp))
 
 	})
-	r.Post("/questionnaire-resp", func(w http.ResponseWriter, r *http.Request) {
-		dec := json.NewDecoder(r.Body)
-		qrBody := questionnaire_resp_model.QRBody{}
-
-		err := dec.Decode(&qrBody)
-		if err != nil {
-			fmt.Println(err)
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("Cant unmarshall custom json"))
-			return
-
-		}
-		fmt.Println("ids::::::::", qrBody.QuestionnaireIds)
-
-		regJsonMarshalledData, err := json.Marshal(qrBody.QuestionnaireResponse)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("Cant unmarshall custom json"))
-			return
-		}
-		unmarshaller, err := jsonformat.NewUnmarshaller(time.UTC.String(), fhirversion.R4)
-
-		unmarshalled, err := unmarshaller.Unmarshal(regJsonMarshalledData)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("Cant unmarshall FHIR Questionnaire"))
-			return
-		}
-
-		cr := unmarshalled.(*r4pb.ContainedResource)
-		qr := cr.GetQuestionnaireResponse()
-
-		// Insert decision logic for a Questionnaire here!!!
-		for _, item := range qr.Item {
-			for _, ans := range item.Answer {
-				fmt.Println(ans.Value.GetCoding().Code.Value)
-				answerVal := ans.Value.GetCoding().Code.Value
-				if answerVal == "urgent-care" {
-					w.WriteHeader(http.StatusAccepted)
-					w.Write([]byte("Next questionnaire id: urgent-menu"))
-					return
-				}
-			}
-		}
-
-		fmt.Println(qr.GetId())
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("{\" Unable to process resp id\": \"" + qr.GetId().Value + "\"}"))
-	})
+	r.Post("/questionnaire-resp", questionnaireResponseHandler)
 
 	r.Post("/fighir", func(w http.ResponseWriter, r *http.Request) {
 		body, err := ioutil.ReadAll(r.Body)
