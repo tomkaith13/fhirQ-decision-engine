@@ -13,6 +13,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/google/fhir/go/fhirversion"
 	"github.com/google/fhir/go/jsonformat"
+	"github.com/google/fhir/go/jsonformat/fhirvalidate"
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/codes_go_proto"
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/datatypes_go_proto"
 	r4pb "github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/bundle_and_contained_resource_go_proto"
@@ -589,22 +590,45 @@ func questionnaireResponseHandler(w http.ResponseWriter, r *http.Request) {
 	cr := unmarshalled.(*r4pb.ContainedResource)
 	qr := cr.GetQuestionnaireResponse()
 
-	// Insert decision logic for a Questionnaire here!!!
-	for _, item := range qr.Item {
-		for _, ans := range item.Answer {
-			fmt.Println(ans.Value.GetCoding().Code.Value)
-			answerVal := ans.Value.GetCoding().Code.Value
-			if answerVal == "urgent-care" {
-				w.WriteHeader(http.StatusAccepted)
-				w.Write([]byte("Next questionnaire id: urgent-menu"))
-				return
-			}
-		}
+	// Validate the accepted response from the user using fhirvalidate
+	err = fhirvalidate.Validate(qr)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("{\" validation error \": \"" + qr.GetId().Value + "\"}" + "error got: " + err.Error()))
+		return
 	}
 
-	fmt.Println(qr.GetId())
-	w.WriteHeader(http.StatusInternalServerError)
-	w.Write([]byte("{\" Unable to process resp id\": \"" + qr.GetId().Value + "\"}"))
+	// Insert decision logic for a Questionnaire here!!!
+
+	// for _, item := range qr.Item {
+	// 	for _, ans := range item.Answer {
+	// 		fmt.Println(ans.Value.GetCoding().Code.Value)
+	// 		answerVal := ans.Value.GetCoding().Code.Value
+	// 		if answerVal == "urgent-care" {
+	// 			w.WriteHeader(http.StatusAccepted)
+	// 			w.Write([]byte("Next questionnaire id: urgent-menu"))
+	// 			return
+	// 		}
+	// 	}
+	// }
+
+	marshaller, err := jsonformat.NewMarshaller(false, "", "", fhirversion.R4)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	rsc := r4pb.ContainedResource{OneofResource: &r4pb.ContainedResource_QuestionnaireResponse{QuestionnaireResponse: qr}}
+	// resp, err := pMarshaller.MarshalResourceToString(q)
+	resp, err := marshaller.Marshal(&rsc)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(resp))
 }
 
 func main() {
