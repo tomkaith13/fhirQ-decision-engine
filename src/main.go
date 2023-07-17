@@ -580,11 +580,12 @@ func questionnaireResponseHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	unmarshaller, err := jsonformat.NewUnmarshaller(time.UTC.String(), fhirversion.R4)
+	unmarshaller.MaxNestingDepth = 5
 
 	unmarshalled, err := unmarshaller.Unmarshal(regJsonMarshalledData)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Cant unmarshall FHIR Questionnaire"))
+		w.Write([]byte("Cant unmarshall FHIR Questionnaire" + ":" + err.Error()))
 		return
 	}
 
@@ -617,7 +618,6 @@ func questionnaireResponseHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(ans.Value.GetCoding().Code.Value)
 				ans.Value.Choice = &questionnaire_response_go_proto.QuestionnaireResponse_Item_Answer_ValueX_Coding{}
 			}
-			if an
 
 		}
 	}
