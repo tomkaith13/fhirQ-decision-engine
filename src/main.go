@@ -18,6 +18,7 @@ import (
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/datatypes_go_proto"
 	r4pb "github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/bundle_and_contained_resource_go_proto"
 	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/questionnaire_go_proto"
+	"github.com/google/fhir/go/proto/google/fhir/proto/r4/core/resources/questionnaire_response_go_proto"
 	stu3Codes "github.com/google/fhir/go/proto/google/fhir/proto/stu3/codes_go_proto"
 	"github.com/masterminds/semver"
 	"github.com/tomkaith13/fhirQuestionnaireEngine/src/figma"
@@ -600,17 +601,26 @@ func questionnaireResponseHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Insert decision logic for a Questionnaire here!!!
 
-	// for _, item := range qr.Item {
-	// 	for _, ans := range item.Answer {
-	// 		fmt.Println(ans.Value.GetCoding().Code.Value)
-	// 		answerVal := ans.Value.GetCoding().Code.Value
-	// 		if answerVal == "urgent-care" {
-	// 			w.WriteHeader(http.StatusAccepted)
-	// 			w.Write([]byte("Next questionnaire id: urgent-menu"))
-	// 			return
-	// 		}
-	// 	}
-	// }
+	for _, item := range qr.Item {
+		for _, ans := range item.Answer {
+			// fmt.Println(ans.Value.GetCoding().Code.Value)
+			// answerVal := ans.Value.GetCoding().Code.Value
+			// if answerVal == "urgent-care" {
+			// 	w.WriteHeader(http.StatusAccepted)
+			// 	w.Write([]byte("Next questionnaire id: urgent-menu"))
+			// 	return
+			// }
+			// oldAns = ans.Value.Get
+			// ans = &questionnaire_response_go_proto.QuestionnaireResponse_Item_Answer{}
+
+			if ans.Value.GetCoding() != nil {
+				fmt.Println(ans.Value.GetCoding().Code.Value)
+				ans.Value.Choice = &questionnaire_response_go_proto.QuestionnaireResponse_Item_Answer_ValueX_Coding{}
+			}
+			if an
+
+		}
+	}
 
 	marshaller, err := jsonformat.NewMarshaller(false, "", "", fhirversion.R4)
 	if err != nil {
